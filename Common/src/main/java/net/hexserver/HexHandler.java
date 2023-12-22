@@ -1,14 +1,10 @@
 package net.hexserver;
 
-import at.petrak.hexcasting.api.spell.SpellList;
 import at.petrak.hexcasting.api.spell.casting.CastingContext;
 import at.petrak.hexcasting.api.spell.casting.CastingHarness;
+import at.petrak.hexcasting.api.spell.casting.ControllerInfo;
 import at.petrak.hexcasting.api.spell.iota.Iota;
-import at.petrak.hexcasting.api.spell.iota.IotaType;
-import at.petrak.hexcasting.api.spell.iota.ListIota;
-import at.petrak.hexcasting.api.spell.iota.PatternIota;
 import at.petrak.hexcasting.common.lib.hex.HexIotaTypes;
-import at.petrak.hexcasting.xplat.IXplatAbstractions;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -25,9 +21,9 @@ public class HexHandler {
     public static ServerPlayerEntity player;
     public static ServerWorld world;
 
-    public static void castHex(String snbt) {
+    public static List<Iota> castHex(String snbt) {
         if (player == null || world == null) {
-            return;
+            return new ArrayList<>();
         }
 
         NbtCompound nbt;
@@ -49,6 +45,14 @@ public class HexHandler {
         var sPlayer = player;
         var ctx = new CastingContext(sPlayer, Hand.MAIN_HAND, CastingContext.CastSource.PACKAGED_HEX);
         var harness = new CastingHarness(ctx);
-        var info = harness.executeIotas(instrs, sPlayer.getWorld());
+        var result = harness.executeIotas(instrs, sPlayer.getWorld());
+
+        List<Iota> stackResult = new ArrayList<>();
+        for (NbtCompound nbtCompound : result.getStack()) {
+            var iota = HexIotaTypes.deserialize(nbtCompound, world);
+            stackResult.add(iota);
+        }
+
+        return stackResult;
     }
 }
