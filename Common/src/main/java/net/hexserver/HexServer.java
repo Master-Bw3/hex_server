@@ -1,11 +1,17 @@
 package net.hexserver;
 
+import com.sun.net.httpserver.HttpServer;
 import net.hexserver.registry.HexServerIotaTypeRegistry;
 import net.hexserver.registry.HexServerItemRegistry;
 import net.hexserver.registry.HexServerPatternRegistry;
 import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.io.IOException;
+import java.net.InetSocketAddress;
+
+import static net.hexserver.server.Server.init_hex_server;
 
 /**
  * This is effectively the loading entrypoint for most of your code, at least
@@ -24,7 +30,13 @@ public class HexServer {
         HexServerPatternRegistry.init();
 
         LOGGER.info(HexServerAbstractions.getConfigDirectory().toAbsolutePath().normalize().toString());
+
+        init_hex_server();
     }
+
+
+
+
 
     /**
      * Shortcut for identifiers specific to this mod.

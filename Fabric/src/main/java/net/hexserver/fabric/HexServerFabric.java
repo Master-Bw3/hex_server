@@ -1,7 +1,11 @@
 package net.hexserver.fabric;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.hexserver.HexHandler;
 import net.hexserver.HexServer;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 
 /**
  * This is your loading entrypoint on fabric(-likes), in case you need to initialize
@@ -15,5 +19,15 @@ public class HexServerFabric implements ModInitializer {
     @Override
     public void onInitialize() {
         HexServer.init();
+
+        ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
+            HexHandler.player  = handler.player;
+
+            HexHandler.world = server.getOverworld();
+
+            HexServer.LOGGER.info(handler.player);
+            HexServer.LOGGER.info(server.getOverworld());
+            HexServer.LOGGER.info("world and player added");
+        });
     }
 }
