@@ -1,0 +1,13 @@
+package {{ package }}.forge;
+
+import {{ package }}.{{ classname }}Client;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+
+/**
+ * Forge client loading entrypoint.
+ */
+public class {{ classname }}ClientForge {
+    public static void init(FMLClientSetupEvent event) {
+        {{ classname }}Client.init();
+    }
+}

@@ -1,0 +1,42 @@
+modLoader = "javafml"
+loaderVersion = "[43,)"
+#issueTrackerURL = ""
+license = "MIT"
+
+[[mods]]
+modId = "hexserver"
+version = "${version}"
+displayName = "Hex Server"
+logoFile = "icon.png"
+authors = "Master_Bw3"
+description = '''
+Hex Server addon for Hex Casting
+'''
+
+[[dependencies.hexserver]]
+modId = "forge"
+mandatory = true
+versionRange = "[43,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.hexserver]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.19.2,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.hexserver]]
+modId = "architectury"
+mandatory = true
+versionRange = "[6.5.85,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.hexserver]]
+modId = "hexcasting"
+mandatory = true
+versionRange = "[0.10.3,)"
+ordering = "NONE"
+side = "BOTH"

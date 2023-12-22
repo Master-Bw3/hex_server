@@ -1,0 +1,13 @@
+{
+  "item.hexserver.dummy_item": "Dummy Item",
+  "hexcasting.spell.hexserver:congrats": "Congrats",
+  "hexcasting.spell.hexserver:signum": "Signum Purification",
+  "hexcasting.spell.book.hexserver:congrats": "Dum. Spell Actn.",
+  "hexcasting.spell.book.hexserver:signum": "Dum. Actn.",
+  "hexserver.entry.dummy_spells": "Dummy Spells",
+  "hexserver.entry.dummy_actions": "Dummy Actions",
+  "hexserver.page.dummy_spells.congrats": "Accepts a player entity, tells them they are doing a good job.",
+  "hexserver.page.dummy_actions.signum": "Accepts a $(l:casting/101)number/$, returns -1 if it is negative, 0 if 0, 1 if positive.",
+  "text.hexserver.congrats": "Good job, %1$s!",
+  "text.hexserver.congrats.player": "a Player"
+}

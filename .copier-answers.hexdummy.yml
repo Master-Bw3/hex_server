@@ -1,0 +1,20 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+# https://copier.readthedocs.io/en/stable/configuring/#the-copier-answersyml-file
+_commit: v0.0.4
+_src_path: gh:object-Object/hexdummy
+author: Master_Bw3
+capitalize_platforms: true
+classname: HexServer
+default_branch: main
+description: Hex Server addon for Hex Casting
+display_name: Hex Server
+github_repo: hex_server
+hexcasting_version: 0.10.3
+homepage_url: https://master_bw3.github.io/hex_server
+initial_mod_version: 0.0.1
+java_version: 17
+license: MIT
+mappings_name: Yarn
+modid: hexserver
+package: net.hexserver
+sources_url: https://github.com/Master_Bw3/hex_server

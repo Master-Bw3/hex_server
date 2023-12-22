@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "hexserver",
+  "version": "${version}",
+  "name": "Hex Server",
+  "description": "Hex Server addon for Hex Casting",
+  "authors": [
+    "Master_Bw3"
+  ],
+  "contact": {
+    "homepage": "https://master_bw3.github.io/hex_server",
+    "sources": "https://github.com/Master_Bw3/hex_server"
+  },
+  "license": "MIT",
+  "icon": "icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.hexserver.fabric.HexServerFabric"
+    ],
+    "client": [
+      "net.hexserver.fabric.HexServerClientFabric"
+    ]
+  },
+  "mixins": [
+    "hexserver-common.mixins.json",
+    "hexserver.mixins.json"
+  ],
+  "depends": {
+    "minecraft": ">=1.19.2",
+    "fabricloader": ">=0.14.21",
+    "fabric-api": "*",
+    "fabric-language-kotlin": ">=1.9.0+kotlin.1.8.0",
+    "architectury": ">=6.5.85",
+    "hexcasting": ">=0.10.3"
+  }
+}
