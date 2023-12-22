@@ -1,6 +1,6 @@
 # Hex Server
 
-Hex Server is a utility mod for Hex Casting that allows for hexes to be cast remotely via http requests. The primary purpose for this is to allow programs like [Hexagon](https://github.com/Master-Bw3/Hexagon/tree/Dev?tab=readme-ov-file) evaluate hexes ingame for testing purposes.
+Hex Server is a utility mod for Hex Casting that allows for hexes to be cast remotely via http requests. The primary purpose for this is to allow programs like [Hexagon](https://github.com/Master-Bw3/Hexagon/tree/Dev?tab=readme-ov-file) to execute hexes ingame for testing purposes.
 
 ## Usage
 1. Launch Minecraft with this mod installed and enter a world
