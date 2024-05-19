@@ -55,4 +55,42 @@ public class HexHandler {
 
         return stackResult;
     }
+
+    public static List<Iota> debugHex(String snbt) {
+        if (player == null || world == null) {
+            return new ArrayList<>();
+        }
+
+        NbtCompound nbt;
+        try {
+            nbt = StringNbtReader.parse(snbt);
+        } catch (CommandSyntaxException e) {
+            nbt = new NbtCompound();
+        }
+
+        List<NbtElement> nbtList = nbt.getList("hexcasting:data", NbtElement.COMPOUND_TYPE);
+
+        List<Iota> instrs = new ArrayList<>();
+
+        for (NbtElement nbtElement : nbtList) {
+            var iota = HexIotaTypes.deserialize((NbtCompound) nbtElement, world);
+            instrs.add(iota);
+        }
+
+        var sPlayer = player;
+        var ctx = new CastingContext(sPlayer, Hand.MAIN_HAND, CastingContext.CastSource.PACKAGED_HEX);
+        var harness = new CastingHarness(ctx);
+
+//        var debugAdapter = DebugAdapterManager[player] ?: return InteractionResultHolder.fail(stack)
+
+        var result = harness.executeIotas(instrs, sPlayer.getWorld());
+
+        List<Iota> stackResult = new ArrayList<>();
+        for (NbtCompound nbtCompound : result.getStack()) {
+            var iota = HexIotaTypes.deserialize(nbtCompound, world);
+            stackResult.add(iota);
+        }
+
+        return stackResult;
+    }
 }
