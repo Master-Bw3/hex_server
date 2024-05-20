@@ -1,13 +1,10 @@
 package net.hexserver.server;
 
-import at.petrak.hexcasting.api.spell.casting.ControllerInfo;
 import at.petrak.hexcasting.api.spell.iota.Iota;
-import at.petrak.hexcasting.common.lib.hex.HexIotaTypes;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import net.hexserver.HexHandler;
 import net.hexserver.HexServer;
-import net.minecraft.nbt.NbtCompound;
 
 import java.io.*;
 import java.net.URLDecoder;
@@ -35,7 +32,8 @@ public class HexPostHandler implements HttpHandler {
         //update hex
         if (parameters.containsKey("SNBT")) {
             String hexSNBT = (String) parameters.get("SNBT");
-            List<Iota> result = HexHandler.castHex(hexSNBT);
+//            List<Iota> result = HexHandler.castHex(hexSNBT);
+            List<Iota> result = HexHandler.INSTANCE.debugHex(hexSNBT);
 
             for (Iota iota : result) {
                 response.append(iota.display().getString());
