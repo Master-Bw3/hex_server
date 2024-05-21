@@ -17,6 +17,6 @@ pluginManagement {
 
 include("Common")
 include("Fabric")
-//include("Forge")
+include("Forge")
 
 rootProject.name = "hexserver"
