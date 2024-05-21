@@ -21,10 +21,16 @@ dependencies {
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2' // for @Nonnull
 
-    modCompileOnly "at.petra-k.paucal:paucal-common-$minecraftVersion:$paucalVersion"
-    modCompileOnly "at.petra-k.hexcasting:hexcasting-fabric-$minecraftVersion:$hexcastingVersion"
-    modCompileOnly "vazkii.patchouli:Patchouli-xplat:$minecraftVersion-$patchouliVersion"
-    modCompileOnly "gay.object:hexdebug-fabric-0.1.1+1.19.2"
+//    implementation "org.eclipse.lsp4j:org.eclipse.lsp4j:0.23.0"
+//    implementation "org.eclipse.lsp4j:org.eclipse.lsp4j.debug:0.23.0"
+//    implementation "org.eclipse.lsp4j:org.eclipse.lsp4j.jsonrpc:0.23.0"
+//    implementation "org.eclipse.lsp4j:org.eclipse.lsp4j.jsonrpc.debug:0.23.0"
+
+
+    modCompileOnly "at.petra-k.paucal:paucal-common-${minecraftVersion}:${paucalVersion}"
+    modCompileOnly "at.petra-k.hexcasting:hexcasting-fabric-${minecraftVersion}:${hexcastingVersion}"
+    modCompileOnly "vazkii.patchouli:Patchouli-xplat:${minecraftVersion}-${patchouliVersion}"
+    modCompileOnly "gay.object.hexdebug:hexdebug-fabric:${hexDebugVersion}"
 }
 
 publishing {

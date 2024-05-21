@@ -48,6 +48,8 @@ allprojects {
     group = project.mavenGroup
 
     repositories {
+        mavenCentral()
+
         maven { url 'https://jitpack.io' }
         maven {
             url "https://squiddev.cc/maven/"
@@ -82,6 +84,7 @@ allprojects {
             name = 'lsp4j'
             url = 'https://repo1.maven.org/maven2'
         }
+
         exclusiveContent {
             forRepository {
                 maven {
@@ -94,10 +97,6 @@ allprojects {
             }
         }
         // Add any other repositories with your cross-platform dependency mods
-
-        flatDir {
-            dirs '../libs'
-        }
     }
 
     tasks.withType(JavaCompile) {

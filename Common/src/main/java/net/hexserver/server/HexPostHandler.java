@@ -1,13 +1,18 @@
 package net.hexserver.server;
 
 import at.petrak.hexcasting.api.spell.iota.Iota;
+import at.petrak.hexcasting.common.lib.hex.HexIotaTypes;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import net.hexserver.HexHandler;
+import net.hexserver.HexHandlerClient;
+import net.hexserver.HexHandlerServer;
 import net.hexserver.HexServer;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
 
 import java.io.*;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,24 +24,43 @@ public class HexPostHandler implements HttpHandler {
     public void handle(HttpExchange he) throws IOException {
         // parse request
         Map<String, Object> parameters = new HashMap<String, Object>();
-        InputStreamReader isr = new InputStreamReader(he.getRequestBody(), "utf-8");
+        InputStreamReader isr = new InputStreamReader(he.getRequestBody(), StandardCharsets.UTF_8);
         BufferedReader br = new BufferedReader(isr);
         String query = br.readLine();
         parseQuery(query, parameters);
 
         // send response
         StringBuilder response = new StringBuilder();
-        HexServer.LOGGER.info("recieved");
+        HexServer.LOGGER.info("received");
 
 
         //update hex
         if (parameters.containsKey("SNBT")) {
             String hexSNBT = (String) parameters.get("SNBT");
-//            List<Iota> result = HexHandler.castHex(hexSNBT);
-            List<Iota> result = HexHandler.INSTANCE.debugHex(hexSNBT);
+            HexHandlerClient.INSTANCE.castHex(hexSNBT);
 
-            for (Iota iota : result) {
-                response.append(iota.display().getString());
+            List<NbtCompound> result = null;
+            final int timeout = 5000;
+            int time = 0;
+
+            while (time < timeout && result == null) {
+                var castResult = HexHandlerClient.INSTANCE.takeCastResult();
+                if (castResult != null) {
+                    result = castResult;
+                } else {
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    time += 10;
+                }
+            }
+
+
+
+            for (NbtCompound iota : result) {
+                response.append(HexIotaTypes.getDisplay(iota).getString());
                 response.append("\n");
             }
 

@@ -1,9 +1,7 @@
 package net.hexserver;
 
 import com.sun.net.httpserver.HttpServer;
-import net.hexserver.registry.HexServerIotaTypeRegistry;
-import net.hexserver.registry.HexServerItemRegistry;
-import net.hexserver.registry.HexServerPatternRegistry;
+import net.hexserver.networking.HexServerNetworking;
 import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,13 +23,9 @@ public class HexServer {
     public static void init() {
         LOGGER.info("Hex Server says hello!");
 
-        HexServerItemRegistry.init();
-        HexServerIotaTypeRegistry.init();
-        HexServerPatternRegistry.init();
-
         LOGGER.info(HexServerAbstractions.getConfigDirectory().toAbsolutePath().normalize().toString());
 
-        init_hex_server();
+        HexServerNetworking.INSTANCE.init();
     }
 
 

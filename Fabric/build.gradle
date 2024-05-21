@@ -53,11 +53,15 @@ dependencies {
 
     modImplementation "dev.emi:trinkets:${trinketsVersion}"
 
-    modImplementation "gay.object:hexdebug-fabric-0.1.1+1.19.2"
-    implementation "org.eclipse.lsp4j:org.eclipse.lsp4j:0.23.0"
-    implementation "org.eclipse.lsp4j:org.eclipse.lsp4j.debug:0.23.0"
-    implementation "org.eclipse.lsp4j:org.eclipse.lsp4j.jsonrpc:0.23.0"
-    implementation "org.eclipse.lsp4j:org.eclipse.lsp4j.jsonrpc.debug:0.23.0"
+    modImplementation "gay.object.hexdebug:hexdebug-fabric:${hexDebugVersion}"
+//    implementation "org.eclipse.lsp4j:org.eclipse.lsp4j:0.23.0"
+//    implementation "org.eclipse.lsp4j:org.eclipse.lsp4j.debug:${lsp4jVersion}"
+//    implementation "org.eclipse.lsp4j:org.eclipse.lsp4j.jsonrpc:0.23.0"
+//    implementation "org.eclipse.lsp4j:org.eclipse.lsp4j.jsonrpc.debug:0.23.0"
+//    implementation "io.ktor:ktor-network:${ktorVersion}"
+//    implementation "io.ktor:ktor-network-jvm:${ktorVersion}"
+//    implementation "io.ktor:ktor-utils-jvm:${ktorVersion}"
+//    implementation "io.ktor:ktor-io-jvm:${ktorVersion}"
 
     common(project(path: ":Common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":Common", configuration: "transformProductionFabric")) { transitive false }
