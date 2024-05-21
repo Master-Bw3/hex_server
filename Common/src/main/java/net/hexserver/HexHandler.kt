@@ -7,28 +7,29 @@ import at.petrak.hexcasting.api.spell.iota.Iota
 import at.petrak.hexcasting.api.utils.putList
 import at.petrak.hexcasting.common.lib.hex.HexIotaTypes
 import com.mojang.brigadier.exceptions.CommandSyntaxException
+import com.sun.net.httpserver.HttpExchange
 import gay.`object`.hexdebug.adapter.DebugAdapterManager
 import gay.`object`.hexdebug.debugger.CastArgs
-import net.hexserver.HexServer.LOGGER
 import net.hexserver.networking.HexServerNetworking
 import net.hexserver.networking.MsgDebugHexC2S
 import net.hexserver.networking.MsgRunHexC2S
 import net.hexserver.networking.MsgRunHexS2C
-import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.nbt.NbtElement
 import net.minecraft.nbt.NbtList
 import net.minecraft.nbt.StringNbtReader
 import net.minecraft.server.network.ServerPlayerEntity
-import net.minecraft.server.world.ServerWorld
 import net.minecraft.util.Hand
-import net.minecraft.util.TypedActionResult
+import java.io.OutputStream
 
 
 object HexHandlerClient {
-    private var castResult: List<NbtCompound>? = null
+    private var exchange: HttpExchange? = null
 
-    fun castHex(snbt: String) {
+
+    fun castHex(snbt: String, response: HttpExchange) {
+        this.exchange = response
+
         val nbt = try {
             StringNbtReader.parse(snbt)
         } catch (e: CommandSyntaxException) {
@@ -37,23 +38,28 @@ object HexHandlerClient {
         HexServerNetworking.sendToServer(MsgRunHexC2S(nbt))
     }
 
+    fun respond(result: List<NbtCompound>) {
+        if (exchange == null) return
+
+        val body = StringBuilder()
+        for (iota in result) {
+            body.append(HexIotaTypes.getDisplay(iota).string)
+            body.append("\n")
+        }
+
+        exchange!!.sendResponseHeaders(200, body.length.toLong())
+        val os: OutputStream = exchange!!.responseBody
+        os.write(body.toString().toByteArray())
+        os.close()
+
+        this.exchange = null
+    }
+
     @Throws(CommandSyntaxException::class)
-    fun debugHex(snbt: String)  {
+    fun debugHex(snbt: String) {
         val nbt = StringNbtReader.parse(snbt)
 
         HexServerNetworking.sendToServer(MsgDebugHexC2S(nbt))
-    }
-
-
-    fun setCastResult(result: List<NbtCompound>) {
-        this.castResult = result;
-
-    }
-
-    fun takeCastResult(): List<NbtCompound>? {
-        val result = this.castResult;
-        this.castResult = null;
-        return result;
     }
 }
 

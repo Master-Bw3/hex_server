@@ -29,52 +29,19 @@ public class HexPostHandler implements HttpHandler {
         String query = br.readLine();
         parseQuery(query, parameters);
 
-        // send response
-        StringBuilder response = new StringBuilder();
-        int responseCode;
-
-        HexServer.LOGGER.info("received");
-
 
         //update hex
         if (parameters.containsKey("SNBT")) {
-            responseCode = 200;
-
             String hexSNBT = (String) parameters.get("SNBT");
-            HexHandlerClient.INSTANCE.castHex(hexSNBT);
-
-            List<NbtCompound> result = null;
-
-            while (result == null) {
-                var castResult = HexHandlerClient.INSTANCE.takeCastResult();
-                if (castResult != null) {
-                    result = castResult;
-                }
-                try {
-                    Thread.sleep(10);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
-
-
-            for (NbtCompound iota : result) {
-                response.append(HexIotaTypes.getDisplay(iota).getString());
-                response.append("\n");
-            }
-
-
+            HexHandlerClient.INSTANCE.castHex(hexSNBT, he);
+            //HexHandlerClient handles sending a response
         } else {
-            responseCode = 400;
-            response.append("Bad Request: invalid SNBT data");
+            String body = "Bad Request: invalid SNBT data";
+            he.sendResponseHeaders(400, body.length());
+            OutputStream os = he.getResponseBody();
+            os.write(body.getBytes());
+            os.close();
         }
-        HexServer.LOGGER.info(response);
-
-        he.sendResponseHeaders(responseCode, response.length());
-        OutputStream os = he.getResponseBody();
-        os.write(response.toString().getBytes());
-        os.close();
     }
 
     public static void parseQuery(String query, Map<String, Object> parameters) throws UnsupportedEncodingException {

@@ -25,7 +25,7 @@ data class MsgRunHexS2C(private val content: NbtCompound) {
         ctx.queue {
             HexServer.LOGGER.debug("Client received packet: {}", this)
             val castResult = content.getList("cast_result", NbtElement.COMPOUND_TYPE).map { it.asCompound }
-            HexHandlerClient.setCastResult(castResult)
+            HexHandlerClient.respond(castResult)
         }
     }
 }
