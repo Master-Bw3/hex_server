@@ -79,10 +79,10 @@ object HexHandlerServer {
         val harness = CastingHarness(ctx)
         val (_, _, stack) = harness.executeIotas(instrs, sPlayer.getWorld())
 
-        val nbtStack = NbtList();
+        val nbtStack = NbtList()
         nbtStack.addAll(stack)
 
-        val nbtResult = NbtCompound();
+        val nbtResult = NbtCompound()
         nbtResult.putList("cast_result", nbtStack)
 
         HexServerNetworking.sendToPlayer(player, MsgRunHexS2C(nbtResult))
