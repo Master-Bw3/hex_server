@@ -21,7 +21,7 @@ public class HexServer {
     public static void init() {
         LOGGER.info("Hex Server says hello!");
 
-        LOGGER.info(HexServerAbstractions.getConfigDirectory().toAbsolutePath().normalize().toString());
+//        LOGGER.info(HexServerAbstractions.getConfigDirectory().toAbsolutePath().normalize().toString());
 
         HexServerNetworking.INSTANCE.init();
     }

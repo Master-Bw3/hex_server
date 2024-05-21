@@ -19,7 +19,6 @@ data class MsgRunHexC2S(private val content: NbtCompound) {
 
     fun apply(supplier: Supplier<PacketContext>) = supplier.get().also { ctx ->
         ctx.queue {
-            HexServer.LOGGER.debug("Server received packet from {}: {}", ctx.player.name.string, this)
             HexHandlerServer.castHex(content, ctx.player as ServerPlayerEntity)
 
         }

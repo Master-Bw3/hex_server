@@ -28,8 +28,6 @@ public class HexDebugHandler implements HttpHandler {
         parseQuery(query, parameters);
 
         // send response
-        HexServer.LOGGER.info("received");
-
         String response;
         int responseCode;
 
@@ -37,7 +35,6 @@ public class HexDebugHandler implements HttpHandler {
         if (parameters.containsKey("SNBT")) {
             String hexSNBT = (String) parameters.get("SNBT");
             try {
-                HexServer.LOGGER.info("debugging hex");
 
                 HexHandlerClient.INSTANCE.debugHex(hexSNBT);
 

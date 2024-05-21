@@ -23,7 +23,6 @@ data class MsgRunHexS2C(private val content: NbtCompound) {
 
     fun apply(supplier: Supplier<PacketContext>) = supplier.get().also { ctx ->
         ctx.queue {
-            HexServer.LOGGER.debug("Client received packet: {}", this)
             val castResult = content.getList("cast_result", NbtElement.COMPOUND_TYPE).map { it.asCompound }
             HexHandlerClient.respond(castResult)
         }
