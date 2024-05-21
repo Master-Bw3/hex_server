@@ -11,6 +11,7 @@ import gay.`object`.hexdebug.adapter.DebugAdapterManager
 import gay.`object`.hexdebug.debugger.CastArgs
 import net.hexserver.HexServer.LOGGER
 import net.hexserver.networking.HexServerNetworking
+import net.hexserver.networking.MsgDebugHexC2S
 import net.hexserver.networking.MsgRunHexC2S
 import net.hexserver.networking.MsgRunHexS2C
 import net.minecraft.item.ItemStack
@@ -33,10 +34,16 @@ object HexHandlerClient {
         } catch (e: CommandSyntaxException) {
             NbtCompound()
         }
-        LOGGER.info("casting hex")
         HexServerNetworking.sendToServer(MsgRunHexC2S(nbt))
-
     }
+
+    @Throws(CommandSyntaxException::class)
+    fun debugHex(snbt: String)  {
+        val nbt = StringNbtReader.parse(snbt)
+
+        HexServerNetworking.sendToServer(MsgDebugHexC2S(nbt))
+    }
+
 
     fun setCastResult(result: List<NbtCompound>) {
         this.castResult = result;
@@ -48,43 +55,6 @@ object HexHandlerClient {
         this.castResult = null;
         return result;
     }
-
-//    fun debugHex(snbt: String?): List<Iota?>? {
-//        if (player == null || world == null) {
-//            return ArrayList()
-//        }
-//        val nbt: NbtCompound
-//        nbt = try {
-//            StringNbtReader.parse(snbt)
-//        } catch (e: CommandSyntaxException) {
-//            NbtCompound()
-//        }
-//        val nbtList: List<NbtElement> = nbt.getList("hexcasting:data", NbtElement.COMPOUND_TYPE.toInt())
-//        val instrs: MutableList<Iota> = ArrayList()
-//        for (nbtElement in nbtList) {
-//            val iota = HexIotaTypes.deserialize(nbtElement as NbtCompound, world)
-//            instrs.add(iota)
-//        }
-//        val sPlayer: ServerPlayerEntity = player!!
-//
-//        val debugAdapter = DebugAdapterManager[sPlayer] ?: return ArrayList()
-//
-//        val ctx = CastingContext(sPlayer, Hand.MAIN_HAND, CastSource.PACKAGED_HEX)
-//
-//        val args = CastArgs(instrs, ctx, world!!) {}
-//
-//        debugAdapter.startDebugging(args)
-//
-//        //val (_, _, stack) = harness.executeIotas(instrs, sPlayer.getWorld())
-//
-//
-//        val stackResult: MutableList<Iota?> = ArrayList()
-////        for (nbtCompound in stack) {
-////            val iota = HexIotaTypes.deserialize(nbtCompound, world)
-////            stackResult.add(iota)
-////        }
-//        return stackResult
-//    }
 }
 
 object HexHandlerServer {
@@ -113,41 +83,25 @@ object HexHandlerServer {
     }
 
 
-//
-//    fun debugHex(snbt: String?): List<Iota?>? {
-//        if (player == null || world == null) {
-//            return ArrayList()
-//        }
-//        val nbt: NbtCompound
-//        nbt = try {
-//            StringNbtReader.parse(snbt)
-//        } catch (e: CommandSyntaxException) {
-//            NbtCompound()
-//        }
-//        val nbtList: List<NbtElement> = nbt.getList("hexcasting:data", NbtElement.COMPOUND_TYPE.toInt())
-//        val instrs: MutableList<Iota> = ArrayList()
-//        for (nbtElement in nbtList) {
-//            val iota = HexIotaTypes.deserialize(nbtElement as NbtCompound, world)
-//            instrs.add(iota)
-//        }
-//        val sPlayer: ServerPlayerEntity = player!!
-//
-//        val debugAdapter = DebugAdapterManager[sPlayer] ?: return ArrayList()
-//
-//        val ctx = CastingContext(sPlayer, Hand.MAIN_HAND, CastSource.PACKAGED_HEX)
-//
-//        val args = CastArgs(instrs, ctx, world!!) {}
-//
-//        debugAdapter.startDebugging(args)
-//
-//        //val (_, _, stack) = harness.executeIotas(instrs, sPlayer.getWorld())
-//
-//
-//        val stackResult: MutableList<Iota?> = ArrayList()
-////        for (nbtCompound in stack) {
-////            val iota = HexIotaTypes.deserialize(nbtCompound, world)
-////            stackResult.add(iota)
-////        }
-//        return stackResult
-//    }
+
+    fun debugHex(nbt: NbtCompound, player: ServerPlayerEntity) {
+        val world = player.getWorld()
+
+
+        val nbtList: List<NbtElement> = nbt.getList("hexcasting:data", NbtElement.COMPOUND_TYPE.toInt())
+        val instrs: MutableList<Iota> = ArrayList()
+        for (nbtElement in nbtList) {
+            val iota = HexIotaTypes.deserialize(nbtElement as NbtCompound, world)
+            instrs.add(iota)
+        }
+        val sPlayer: ServerPlayerEntity = player
+
+        val debugAdapter = DebugAdapterManager[sPlayer]!!
+
+        val ctx = CastingContext(sPlayer, Hand.MAIN_HAND, CastSource.PACKAGED_HEX)
+
+        val args = CastArgs(instrs, ctx, world!!) {}
+
+        debugAdapter.startDebugging(args)
+    }
 }

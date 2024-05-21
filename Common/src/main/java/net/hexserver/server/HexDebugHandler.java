@@ -1,14 +1,12 @@
 package net.hexserver.server;
 
-import at.petrak.hexcasting.api.spell.iota.Iota;
 import at.petrak.hexcasting.common.lib.hex.HexIotaTypes;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import net.hexserver.HexHandlerClient;
-import net.hexserver.HexHandlerServer;
 import net.hexserver.HexServer;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtList;
 
 import java.io.*;
 import java.net.URLDecoder;
@@ -18,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class HexPostHandler implements HttpHandler {
+public class HexDebugHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange he) throws IOException {
@@ -30,50 +28,36 @@ public class HexPostHandler implements HttpHandler {
         parseQuery(query, parameters);
 
         // send response
-        StringBuilder response = new StringBuilder();
-        int responseCode;
-
         HexServer.LOGGER.info("received");
 
+        String response;
+        int responseCode;
 
         //update hex
         if (parameters.containsKey("SNBT")) {
-            responseCode = 200;
-
             String hexSNBT = (String) parameters.get("SNBT");
-            HexHandlerClient.INSTANCE.castHex(hexSNBT);
+            try {
+                HexServer.LOGGER.info("debugging hex");
 
-            List<NbtCompound> result = null;
+                HexHandlerClient.INSTANCE.debugHex(hexSNBT);
 
-            while (result == null) {
-                var castResult = HexHandlerClient.INSTANCE.takeCastResult();
-                if (castResult != null) {
-                    result = castResult;
-                }
-                try {
-                    Thread.sleep(10);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
-
-
-            for (NbtCompound iota : result) {
-                response.append(HexIotaTypes.getDisplay(iota).getString());
-                response.append("\n");
+                response = "Hex successfully received for debugging";
+                responseCode = 200;
+            } catch (CommandSyntaxException e) {
+                response = "Bad Request: invalid SNBT data";
+                responseCode = 400;
             }
 
 
         } else {
+            response = "Bad Request: Expected SNBT Tag";
             responseCode = 400;
-            response.append("Bad Request: invalid SNBT data");
         }
-        HexServer.LOGGER.info(response);
+
 
         he.sendResponseHeaders(responseCode, response.length());
         OutputStream os = he.getResponseBody();
-        os.write(response.toString().getBytes());
+        os.write(response.getBytes());
         os.close();
     }
 

@@ -14,6 +14,8 @@ public class Server {
             System.out.println("server started at " + port);
             server.createContext("/", new RootHandler());
             server.createContext("/hexPost", new HexPostHandler());
+            server.createContext("/hexDebug", new HexDebugHandler());
+
             server.setExecutor(null);
             server.start();
         } catch (IOException e) {
