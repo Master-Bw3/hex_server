@@ -39,20 +39,20 @@ object HexHandlerClient {
     }
 
     fun respond(result: List<NbtCompound>) {
-        if (exchange == null) return
+        exchange?.also {
+            val body = StringBuilder()
+            for (iota in result) {
+                body.append(HexIotaTypes.getDisplay(iota).string)
+                body.append("\n")
+            }
 
-        val body = StringBuilder()
-        for (iota in result) {
-            body.append(HexIotaTypes.getDisplay(iota).string)
-            body.append("\n")
+            it.sendResponseHeaders(200, body.length.toLong())
+            val os: OutputStream = it.responseBody
+            os.write(body.toString().toByteArray())
+            os.close()
+
+            this.exchange = null
         }
-
-        exchange!!.sendResponseHeaders(200, body.length.toLong())
-        val os: OutputStream = exchange!!.responseBody
-        os.write(body.toString().toByteArray())
-        os.close()
-
-        this.exchange = null
     }
 
     @Throws(CommandSyntaxException::class)
@@ -89,9 +89,8 @@ object HexHandlerServer {
     }
 
 
-
     fun debugHex(nbt: NbtCompound, player: ServerPlayerEntity) {
-        val world = player.getWorld()
+        val world = player.getWorld()!!
 
 
         val nbtList: List<NbtElement> = nbt.getList("hexcasting:data", NbtElement.COMPOUND_TYPE.toInt())
@@ -102,12 +101,12 @@ object HexHandlerServer {
         }
         val sPlayer: ServerPlayerEntity = player
 
-        val debugAdapter = DebugAdapterManager[sPlayer]!!
+        val debugAdapter = DebugAdapterManager[sPlayer]
 
         val ctx = CastingContext(sPlayer, Hand.MAIN_HAND, CastSource.PACKAGED_HEX)
 
-        val args = CastArgs(instrs, ctx, world!!) {}
+        val args = CastArgs(instrs, ctx, world) {}
 
-        debugAdapter.startDebugging(args)
+        debugAdapter?.startDebugging(args)
     }
 }
