@@ -1,9 +1,9 @@
 plugins {
     id "architectury-plugin" version "3.4.+"
 
-    id "dev.architectury.loom" version "1.2.+" apply false
+    id "dev.architectury.loom" version "1.5.+" apply false
 
-    id "org.jetbrains.kotlin.jvm" version "1.8.0" apply false
+    id "org.jetbrains.kotlin.jvm" version "1.8.21" apply false
 
     // for template.env api keys
     id "co.uzzu.dotenv.gradle" version "2.0.0"
@@ -48,6 +48,8 @@ allprojects {
     group = project.mavenGroup
 
     repositories {
+        mavenCentral()
+
         maven { url 'https://jitpack.io' }
         maven {
             url "https://squiddev.cc/maven/"
@@ -78,6 +80,11 @@ allprojects {
             name = 'GeckoLib'
             url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
         }
+        maven {
+            name = 'lsp4j'
+            url = 'https://repo1.maven.org/maven2'
+        }
+
         exclusiveContent {
             forRepository {
                 maven {
@@ -89,7 +96,6 @@ allprojects {
                 includeGroup "maven.modrinth"
             }
         }
-
         // Add any other repositories with your cross-platform dependency mods
     }
 

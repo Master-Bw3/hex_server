@@ -23,7 +23,6 @@
     ]
   },
   "mixins": [
-    "hexserver-common.mixins.json",
     "hexserver.mixins.json"
   ],
   "depends": {

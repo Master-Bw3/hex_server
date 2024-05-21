@@ -40,6 +40,12 @@ dependencies {
         transitive = false
     }
 
+    modImplementation("gay.object.hexdebug:hexdebug-forge:${hexDebugVersion}") {
+        transitive = false
+    }
+    api("me.shedaniel.cloth:cloth-config-forge:${clothConfigVersion}")
+
+
     // // Hex Casting Dependencies
     modCompileOnly "at.petra-k.paucal:paucal-forge-${minecraftVersion}:${paucalVersion}"
     modCompileOnly "vazkii.patchouli:Patchouli:${minecraftVersion}-${patchouliVersion}"
