@@ -9,8 +9,6 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
-import static net.hexserver.server.Server.init_hex_server;
-
 /**
  * This is effectively the loading entrypoint for most of your code, at least
  * if you are using Architectury as intended.

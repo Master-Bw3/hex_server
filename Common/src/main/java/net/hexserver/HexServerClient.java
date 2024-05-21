@@ -1,13 +1,26 @@
 package net.hexserver;
 
-import static net.hexserver.server.Server.init_hex_server;
+import dev.architectury.event.events.client.ClientPlayerEvent;
+import net.hexserver.server.Server;
+
 
 /**
  * Common client loading entrypoint.
  */
 public class HexServerClient {
-    public static void init() {
-        init_hex_server();
+    static Server httpServer;
 
+    public static void init() {
+
+        ClientPlayerEvent.CLIENT_PLAYER_JOIN.register((x) -> {
+            httpServer = new Server();
+        });
+
+
+        ClientPlayerEvent.CLIENT_PLAYER_QUIT.register((x) -> {
+            if (httpServer != null) {
+                httpServer.stop();
+            }
+        });
     }
 }
