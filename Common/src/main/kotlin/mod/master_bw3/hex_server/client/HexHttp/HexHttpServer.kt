@@ -49,7 +49,7 @@ internal class HexHttpServer(val player: ClientPlayerEntity, port: Int) {
                 }
 
                 call.response.status(HttpStatusCode.OK)
-                call.respondText { result.stackDescs.map { IotaType.getDisplay(it) }.joinToString("\n") }
+                call.respondText { result.stackDescs.map { IotaType.getDisplay(it).string }.joinToString("\n") }
 
             }
         }

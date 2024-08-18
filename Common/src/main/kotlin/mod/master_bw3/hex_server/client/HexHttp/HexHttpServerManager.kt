@@ -7,6 +7,9 @@ object HexHttpServerManager {
 
     private var server: HexHttpServer? = null
 
+    val requestHandler: MCServerRequestHandler?
+        get() = server?.requestHandler
+
     fun init() {
         ClientPlayerEvent.CLIENT_PLAYER_JOIN.register { player ->
             server?.stop()
