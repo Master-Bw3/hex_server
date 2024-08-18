@@ -1,0 +1,21 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+# https://copier.readthedocs.io/en/stable/updating/#never-change-the-answers-file-manually
+_commit: v0.0.9-34-gc32b215
+_src_path: gh:FallingColors/hexdummy
+advanced: true
+capitalize_platforms: true
+classname: HexServer
+default_branch: 1.20.1
+description: Hex Server addon for Hex Casting
+display_name: Hex Server
+github_repo: hex_server
+github_user: Master-Bw3
+homepage_url: https://master-bw3.github.io/hex_server
+java_version: 17
+kotlin: true
+mappings_name: Yarn
+minecraft_version: 1.20.1
+mod_version: 0.1.0
+modid: hex_server
+package: mod.master_bw3.hex_server
+sources_url: https://github.com/Master-Bw3/hex_server
