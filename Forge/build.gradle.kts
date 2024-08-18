@@ -70,6 +70,11 @@ dependencies {
         implementation(it)
         include(it)
     }
+
+    libs.bundles.ktor.also {
+        implementation(it)
+        include(it)
+    }
 }
 
 tasks {

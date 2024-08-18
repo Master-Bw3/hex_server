@@ -63,6 +63,11 @@ dependencies {
         exclude(group = "net.fabricmc.fabric-api")
     }
     modImplementation(libs.modMenu)
+
+    libs.bundles.ktor.also {
+        implementation(it)
+        include(it)
+    }
 }
 
 publishMods {

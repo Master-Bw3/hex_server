@@ -19,4 +19,6 @@ dependencies {
     modApi(libs.clothConfig.common)
 
     implementation(libs.mixinExtras)
+
+    implementation(libs.bundles.ktor)
 }
