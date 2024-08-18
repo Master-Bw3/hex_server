@@ -32,7 +32,7 @@ loom {
     }
 }
 
-hex_serverModDependencies {
+hexserverModDependencies {
     // expand versions in mods.toml
     filesMatching.add("META-INF/mods.toml")
 

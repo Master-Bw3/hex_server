@@ -6,7 +6,7 @@ architectury {
     fabric()
 }
 
-hex_serverModDependencies {
+hexserverModDependencies {
     // expand versions in fabric.mod.json
     filesMatching.add("fabric.mod.json")
 
