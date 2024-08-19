@@ -6,7 +6,7 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 object HexServer {
-    const val MODID = "hexui"
+    const val MODID = "hex_server"
 
     @JvmField
     val LOGGER: Logger = LogManager.getLogger(MODID)
