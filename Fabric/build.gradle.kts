@@ -53,6 +53,8 @@ dependencies {
     modLocalRuntime(libs.serializationHooks)
     modLocalRuntime(libs.trinkets)
 
+    modImplementation(libs.hexdebug.fabric)
+
     // this is also a Hex dependency, but it's included in case you want to use it for stuff
     libs.mixinExtras.also {
         implementation(it)
@@ -63,6 +65,7 @@ dependencies {
         exclude(group = "net.fabricmc.fabric-api")
     }
     modImplementation(libs.modMenu)
+
 
     libs.bundles.ktor.also {
         implementation(it)

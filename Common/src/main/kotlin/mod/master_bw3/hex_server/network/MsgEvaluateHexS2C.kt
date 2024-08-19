@@ -26,7 +26,7 @@ data class MsgEvaluateHexS2C(private val result: ExecutionClientView, private va
         val ctx = supplier.get()
 
         ctx.queue {
-            HexHttpServerManager.requestHandler?.setEvaluatedHexResult(id, result)
+            HexHttpServerManager.hexRequestHandler?.setEvaluatedHexResult(id, result)
         }
     }
 

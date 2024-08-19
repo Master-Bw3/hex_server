@@ -16,16 +16,13 @@ object HexServerNetworking {
 
     fun init() {
         register(
-            MsgEvaluateHexC2S::class.java,
-            MsgEvaluateHexC2S::encode,
-            ::MsgEvaluateHexC2S,
-            MsgEvaluateHexC2S::apply
+            MsgEvaluateHexC2S::class.java, MsgEvaluateHexC2S::encode, ::MsgEvaluateHexC2S, MsgEvaluateHexC2S::apply
         )
         register(
-            MsgEvaluateHexS2C::class.java,
-            MsgEvaluateHexS2C::encode,
-            ::MsgEvaluateHexS2C,
-            MsgEvaluateHexS2C::apply
+            MsgEvaluateHexS2C::class.java, MsgEvaluateHexS2C::encode, ::MsgEvaluateHexS2C, MsgEvaluateHexS2C::apply
+        )
+        register(
+            MsgDebugHexC2S::class.java, MsgDebugHexC2S::encode, ::MsgDebugHexC2S, MsgDebugHexC2S::apply
         )
 
     }

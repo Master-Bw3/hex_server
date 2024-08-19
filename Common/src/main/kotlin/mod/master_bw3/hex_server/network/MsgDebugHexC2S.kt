@@ -1,28 +1,26 @@
 package mod.master_bw3.hex_server.network
 
-import at.petrak.hexcasting.api.casting.eval.env.PackagedItemCastEnv
-import at.petrak.hexcasting.api.casting.eval.vm.CastingVM
 import at.petrak.hexcasting.api.casting.iota.Iota
 import at.petrak.hexcasting.api.casting.iota.IotaType
-import at.petrak.hexcasting.common.lib.hex.HexIotaTypes
 import dev.architectury.networking.NetworkManager.PacketContext
+import gay.`object`.hexdebug.adapter.DebugAdapterManager
+import gay.`object`.hexdebug.debugger.CastArgs
 import mod.master_bw3.hex_server.HexServer
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.nbt.NbtElement
-import net.minecraft.nbt.NbtList
 import net.minecraft.network.PacketByteBuf
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.server.world.ServerWorld
 import net.minecraft.util.Hand
-import java.util.UUID
 import java.util.function.Supplier
+import gay.`object`.hexdebug.casting.eval.DebuggerCastEnv
 
-data class MsgEvaluateHexC2S(private val hex: NbtCompound, private val id: UUID) : Message<Side.C2S> {
-    constructor(buf: PacketByteBuf) : this(buf.readNbt()!!, buf.readUuid())
+
+data class MsgDebugHexC2S(private val hex: NbtCompound) : Message<Side.C2S> {
+    constructor(buf: PacketByteBuf) : this(buf.readNbt()!!)
 
     override fun encode(buf: PacketByteBuf) {
         buf.writeNbt(hex)
-        buf.writeUuid(id)
     }
 
     override fun apply(supplier: Supplier<PacketContext>) {
@@ -38,17 +36,13 @@ data class MsgEvaluateHexC2S(private val hex: NbtCompound, private val id: UUID)
                 instrs.add(iota)
             }
             val sPlayer: ServerPlayerEntity = player as ServerPlayerEntity
-            val castingContext = PackagedItemCastEnv(sPlayer, Hand.MAIN_HAND)
-            val harness = CastingVM.empty(castingContext)
-            val result = harness.queueExecuteAndWrapIotas(instrs, world)
+            val castingContext = DebuggerCastEnv(sPlayer, Hand.MAIN_HAND)
+            val args = CastArgs(instrs, castingContext, world) {}
 
+            val debugAdapter = DebugAdapterManager[sPlayer]
 
-
-            HexServerNetworking.sendToPlayer(player, MsgEvaluateHexS2C(result, id))
-        }
-
-        ctx.queue {
-            HexServer.LOGGER.info("packet moment")
+            debugAdapter?.terminate(null)
+            debugAdapter?.startDebugging(args)
         }
     }
 }

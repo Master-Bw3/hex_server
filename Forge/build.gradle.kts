@@ -71,6 +71,8 @@ dependencies {
         include(it)
     }
 
+    modImplementation(libs.hexdebug.forge)
+
     libs.bundles.ktor.also {
         implementation(it)
         include(it)

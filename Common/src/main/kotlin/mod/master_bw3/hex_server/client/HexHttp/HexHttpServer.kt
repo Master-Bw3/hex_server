@@ -3,6 +3,7 @@ package mod.master_bw3.hex_server.client.HexHttp
 import at.petrak.hexcasting.api.casting.eval.ExecutionClientView
 import at.petrak.hexcasting.api.casting.iota.IotaType
 import com.mojang.brigadier.exceptions.CommandSyntaxException
+import dev.architectury.platform.Platform
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
@@ -11,6 +12,8 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import mod.master_bw3.hex_server.HexServer
+import mod.master_bw3.hex_server.network.HexServerNetworking
+import mod.master_bw3.hex_server.network.MsgDebugHexC2S
 import net.minecraft.client.network.ClientPlayerEntity
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.nbt.StringNbtReader
@@ -19,7 +22,7 @@ import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
 
 internal class HexHttpServer(val player: ClientPlayerEntity, port: Int) {
-    val requestHandler = MCServerRequestHandler()
+    val hexRequestHandler = MCServerEvalHexRequestHandler()
 
     private val server = embeddedServer(Netty, port) {
         routing {
@@ -28,9 +31,6 @@ internal class HexHttpServer(val player: ClientPlayerEntity, port: Int) {
             }
 
             post("/hexPost") {
-                HexServer.LOGGER.info("get")
-
-
                 val snbt = call.receiveParameters()["SNBT"]
 
                 val hex = parseSNBT(snbt)
@@ -41,7 +41,7 @@ internal class HexHttpServer(val player: ClientPlayerEntity, port: Int) {
                 }
 
                 val result: ExecutionClientView = try {
-                    requestHandler.evaluateHex(hex).get(5, TimeUnit.SECONDS)
+                    hexRequestHandler.evaluateHex(hex).get(5, TimeUnit.SECONDS)
                 } catch (e: TimeoutException) {
                     call.response.status(HttpStatusCode.InternalServerError)
                     call.respondText { "Error: Hex took too long to execute" }
@@ -51,6 +51,28 @@ internal class HexHttpServer(val player: ClientPlayerEntity, port: Int) {
                 call.response.status(HttpStatusCode.OK)
                 call.respondText { result.stackDescs.map { IotaType.getDisplay(it).string }.joinToString("\n") }
 
+            }
+
+            post("/hexDebug") {
+                if (!Platform.isModLoaded("hexdebug")) {
+                    call.response.status(HttpStatusCode.NotImplemented)
+                    call.respondText { "Server Error: HexDebug is not installed" }
+                    return@post
+                }
+
+                val snbt = call.receiveParameters()["SNBT"]
+
+                val hex = parseSNBT(snbt)
+                if (hex == null) {
+                    call.response.status(HttpStatusCode.BadRequest)
+                    call.respondText { "Bad Request: invalid SNBT data" }
+                    return@post
+                }
+
+                HexServerNetworking.sendToServer(MsgDebugHexC2S(hex))
+
+                call.response.status(HttpStatusCode.OK)
+                call.respondText { "Hex successfully received for debugging" }
             }
         }
     }.start(wait = false)

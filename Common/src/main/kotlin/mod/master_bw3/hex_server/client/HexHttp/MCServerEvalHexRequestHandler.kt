@@ -7,7 +7,8 @@ import net.minecraft.nbt.NbtCompound
 import java.util.*
 import java.util.concurrent.*
 
-class MCServerRequestHandler {
+
+class MCServerEvalHexRequestHandler {
     private var pending: ConcurrentHashMap<UUID, HexFuture> = ConcurrentHashMap()
 
     fun evaluateHex(hex: NbtCompound): Future<ExecutionClientView> {
@@ -26,7 +27,7 @@ class MCServerRequestHandler {
     }
 
     //not cursed at all
-    private class HexFuture(private val id: UUID, private val requestHandler: MCServerRequestHandler) :
+    private class HexFuture(private val id: UUID, private val requestHandler: MCServerEvalHexRequestHandler) :
         CompletableFuture<ExecutionClientView>() {
 
         override fun get(timeout: Long, unit: TimeUnit): ExecutionClientView {

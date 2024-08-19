@@ -18,6 +18,8 @@ dependencies {
 
     modApi(libs.clothConfig.common)
 
+    modCompileOnly(libs.hexdebug.fabric)
+
     implementation(libs.mixinExtras)
 
     implementation(libs.bundles.ktor)
