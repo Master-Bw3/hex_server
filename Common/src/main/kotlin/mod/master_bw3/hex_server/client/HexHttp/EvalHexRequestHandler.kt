@@ -7,15 +7,16 @@ import net.minecraft.nbt.NbtCompound
 import java.util.*
 import java.util.concurrent.*
 
+typealias HexFuture = CompletableFuture<ExecutionClientView>
 
-class MCServerEvalHexRequestHandler {
+class EvalHexRequestHandler {
     private var pending: ConcurrentHashMap<UUID, HexFuture> = ConcurrentHashMap()
 
     fun evaluateHex(hex: NbtCompound): Future<ExecutionClientView> {
         val uuid = UUID.randomUUID()
-        val future = HexFuture(uuid, this)
+        val future = HexFuture()
         HexServerNetworking.sendToServer(MsgEvaluateHexC2S(hex, uuid))
-        pending.put(uuid, future)
+        pending[uuid] = future
 
         return future
     }
@@ -24,19 +25,5 @@ class MCServerEvalHexRequestHandler {
         val future: HexFuture? = pending.remove(id)
 
         future?.complete(result)
-    }
-
-    //not cursed at all
-    private class HexFuture(private val id: UUID, private val requestHandler: MCServerEvalHexRequestHandler) :
-        CompletableFuture<ExecutionClientView>() {
-
-        override fun get(timeout: Long, unit: TimeUnit): ExecutionClientView {
-            return try {
-                super.get(timeout, unit)
-            } catch (e: TimeoutException) {
-                requestHandler.pending.remove(id)
-                throw e
-            }
-        }
     }
 }

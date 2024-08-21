@@ -7,24 +7,22 @@ import dev.architectury.platform.Platform
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
-import io.ktor.server.netty.*
+import io.ktor.server.jetty.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import mod.master_bw3.hex_server.HexServer
 import mod.master_bw3.hex_server.network.HexServerNetworking
 import mod.master_bw3.hex_server.network.MsgDebugHexC2S
 import net.minecraft.client.network.ClientPlayerEntity
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.nbt.StringNbtReader
-import java.util.*
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
 
 internal class HexHttpServer(val player: ClientPlayerEntity, port: Int) {
-    val hexRequestHandler = MCServerEvalHexRequestHandler()
+    val hexRequestHandler = EvalHexRequestHandler()
 
-    private val server = embeddedServer(Netty, port) {
+    private val server = embeddedServer(Jetty, port) {
         routing {
             get("/") {
                 call.respondText("Hello, world!")
@@ -41,7 +39,7 @@ internal class HexHttpServer(val player: ClientPlayerEntity, port: Int) {
                 }
 
                 val result: ExecutionClientView = try {
-                    hexRequestHandler.evaluateHex(hex).get(5, TimeUnit.SECONDS)
+                    hexRequestHandler.evaluateHex(hex).get()
                 } catch (e: TimeoutException) {
                     call.response.status(HttpStatusCode.InternalServerError)
                     call.respondText { "Error: Hex took too long to execute" }
@@ -49,7 +47,7 @@ internal class HexHttpServer(val player: ClientPlayerEntity, port: Int) {
                 }
 
                 call.response.status(HttpStatusCode.OK)
-                call.respondText { result.stackDescs.map { IotaType.getDisplay(it).string }.joinToString("\n") }
+                call.respondText { result.stackDescs.joinToString("\n") { IotaType.getDisplay(it).string } }
 
             }
 

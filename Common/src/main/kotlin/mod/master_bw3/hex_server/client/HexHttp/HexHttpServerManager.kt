@@ -7,7 +7,7 @@ object HexHttpServerManager {
 
     private var server: HexHttpServer? = null
 
-    val hexRequestHandler: MCServerEvalHexRequestHandler?
+    val hexRequestHandler: EvalHexRequestHandler?
         get() = server?.hexRequestHandler
 
     fun init() {

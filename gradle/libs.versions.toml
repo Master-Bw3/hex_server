@@ -52,12 +52,12 @@ asm = "9.5"
 shadow = "7.1.2"
 modPublish = "0.5.1"
 
-fat-ktor = "0.0.1"
 coroutines = "1.9.0-RC.2"
 
 [bundles]
 asm = ["asm", "asm-analysis", "asm-commons", "asm-tree", "asm-util"]
 ktor = ["fat-ktor"]
+coroutines = ["coroutines", "coroutines-jvm"]
 
 [libraries]
 kotlin-stdlib = { module="org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref="kotlin" }
@@ -109,10 +109,11 @@ asm-commons  = { module="org.ow2.asm:asm-commons", version.ref="asm" }
 asm-tree     = { module="org.ow2.asm:asm-tree", version.ref="asm" }
 asm-util     = { module="org.ow2.asm:asm-util", version.ref="asm" }
 
-fat-ktor = { module="libs:fat-ktor", version.ref="fat-ktor" }
+fat-ktor = { module="libs:fat_ktor" }
 
 
 coroutines = { module="org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref="coroutines"}
+coroutines-jvm = { module="org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm", version.ref="coroutines"}
 
 pkpcpbp = { module="at.petra-k.pkpcpbp:PKPCPBP", version.ref="pkpcpbp" }
 
