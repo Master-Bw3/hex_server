@@ -46,9 +46,5 @@ data class MsgEvaluateHexC2S(private val hex: NbtCompound, private val id: UUID)
 
             HexServerNetworking.sendToPlayer(player, MsgEvaluateHexS2C(result, id))
         }
-
-        ctx.queue {
-            HexServer.LOGGER.info("packet moment")
-        }
     }
 }
