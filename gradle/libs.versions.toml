@@ -52,11 +52,15 @@ asm = "9.5"
 shadow = "7.1.2"
 modPublish = "0.5.1"
 
+ktor = "2.3.10"
 coroutines = "1.9.0-RC.2"
 
 [bundles]
 asm = ["asm", "asm-analysis", "asm-commons", "asm-tree", "asm-util"]
-ktor = ["fat-ktor"]
+ktor = ["ktor", "jetty", "servlet", "host", "serialization", "events", "websockets", "http-cio",
+    "http", "network", "utils", "io", "slf4j", "typesafe", "jansi", "jetty-alpn-java", "jetty-alpn-openjdk8",
+    "jetty-alpn", "http2-server", "jetty-server", "jetty-servlets", "servlet-api", "http2-common", "http2-hpac",
+    "jetty-http", "jetty-io", "jetty-continuation", "jetty-util"]
 coroutines = ["coroutines", "coroutines-jvm"]
 
 [libraries]
@@ -109,7 +113,34 @@ asm-commons  = { module="org.ow2.asm:asm-commons", version.ref="asm" }
 asm-tree     = { module="org.ow2.asm:asm-tree", version.ref="asm" }
 asm-util     = { module="org.ow2.asm:asm-util", version.ref="asm" }
 
-fat-ktor = { module="libs:fat_ktor" }
+ktor = { module = "io.ktor:ktor-server-core-jvm", version.ref="ktor"}
+jetty = { module = "io.ktor:ktor-server-jetty-jvm", version.ref="ktor"}
+servlet = { module = "io.ktor:ktor-server-servlet-jvm", version.ref="ktor"}
+host = { module = "io.ktor:ktor-server-host-common-jvm", version.ref="ktor"}
+serialization = { module = "io.ktor:ktor-serialization-jvm", version.ref="ktor"}
+events = { module = "io.ktor:ktor-events-jvm", version.ref="ktor"}
+websockets = { module = "io.ktor:ktor-websockets-jvm", version.ref="ktor"}
+http-cio = { module = "io.ktor:ktor-http-cio-jvm", version.ref="ktor"}
+http = { module = "io.ktor:ktor-http-jvm", version.ref="ktor"}
+network = { module = "io.ktor:ktor-network-jvm", version.ref="ktor"}
+utils = { module = "io.ktor:ktor-utils-jvm", version.ref="ktor"}
+io = { module = "io.ktor:ktor-io-jvm", version.ref="ktor"}
+slf4j = { module = "org.slf4j:slf4j-api", version="1.7.36"}
+typesafe= { module = "com.typesafe:config", version="1.4.3"}
+jansi = { module = "org.fusesource.jansi:jansi", version="2.4.1"}
+jetty-alpn-java = { module = "org.eclipse.jetty:jetty-alpn-java-server", version="9.4.53.v20231009"}
+jetty-alpn-openjdk8 = { module = "org.eclipse.jetty:jetty-alpn-openjdk8-server", version="9.4.53.v20231009"}
+jetty-alpn = { module = "org.eclipse.jetty:jetty-alpn-server", version="9.4.53.v20231009"}
+http2-server = { module = "org.eclipse.jetty.http2:http2-server", version="9.4.53.v20231009"}
+jetty-server = { module = "org.eclipse.jetty:jetty-server", version="9.4.53.v20231009"}
+jetty-servlets = { module = "org.eclipse.jetty:jetty-servlets", version="9.4.53.v20231009"}
+servlet-api = { module = "javax.servlet:javax.servlet-api", version="3.1.0"}
+http2-common = { module = "org.eclipse.jetty.http2:http2-common", version="9.4.53.v20231009"}
+http2-hpac = { module = "org.eclipse.jetty.http2:http2-hpack", version="9.4.53.v20231009"}
+jetty-http = { module = "org.eclipse.jetty:jetty-http", version="9.4.53.v20231009"}
+jetty-io = { module = "org.eclipse.jetty:jetty-io", version="9.4.53.v20231009"}
+jetty-continuation = { module = "org.eclipse.jetty:jetty-continuation", version="9.4.53.v20231009"}
+jetty-util = { module = "org.eclipse.jetty:jetty-util", version="9.4.53.v20231009"}
 
 
 coroutines = { module="org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref="coroutines"}

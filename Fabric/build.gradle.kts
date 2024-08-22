@@ -66,7 +66,6 @@ dependencies {
     }
     modImplementation(libs.modMenu)
 
-
     libs.bundles.ktor.also {
         implementation(it)
         include(it)
