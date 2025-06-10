@@ -63,7 +63,7 @@ dependencies {
     modImplementation(libs.paucal.forge)
     modLocalRuntime(libs.patchouli.forge)
     modLocalRuntime(libs.caelus)
-
+    modLocalRuntime(libs.inline.forge)
     modApi(libs.clothConfig.forge)
 
     libs.mixinExtras.also {

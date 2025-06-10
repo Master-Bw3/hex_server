@@ -29,6 +29,7 @@ forge-dependency = "47" # for mods.toml
 hexcasting = "0.11.2-pre-701"
 paucal     = "0.6.0-pre-118"
 pkpcpbp    = "0.1.0-pre-87"
+inline = "1.20.1-1.0.1"
 
 patchouli        = "1.20.1-84"
 patchouli-fabric = "1.20.1-84-FABRIC" # thanks vazkii
@@ -106,6 +107,9 @@ caelus = { module="top.theillusivec4.caelus:caelus-forge", version.ref="caelus" 
 
 hexdebug-fabric = { module="gay.object.hexdebug:hexdebug-fabric", version.ref="hexdebug"}
 hexdebug-forge = { module="gay.object.hexdebug:hexdebug-forge", version.ref="hexdebug"}
+
+inline-fabric = { module="com.samsthenerd.inline:inline-fabric", version.ref="inline" }
+inline-forge  = { module="com.samsthenerd.inline:inline-forge", version.ref="inline" }
 
 asm          = { module="org.ow2.asm:asm", version.ref="asm" }
 asm-analysis = { module="org.ow2.asm:asm-analysis", version.ref="asm" }

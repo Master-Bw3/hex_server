@@ -52,7 +52,7 @@ dependencies {
     modLocalRuntime(libs.cardinalComponents)
     modLocalRuntime(libs.serializationHooks)
     modLocalRuntime(libs.trinkets)
-
+    modLocalRuntime(libs.inline.fabric)
     modImplementation(libs.hexdebug.fabric)
 
     // this is also a Hex dependency, but it's included in case you want to use it for stuff

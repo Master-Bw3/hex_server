@@ -37,6 +37,7 @@
             ncurses
             patchelf
             zlib
+            libglvnd
           ];
 
           shellHook =
@@ -44,6 +45,7 @@
               prev = "\${JAVA_TOOL_OPTIONS:+ $JAVA_TOOL_OPTIONS}";
             in
             ''
+              export LD_LIBRARY_PATH="''${LD_LIBRARY_PATH}''${LD_LIBRARY_PATH:+:}${pkgs.libglvnd}/lib"
               export JAVA_TOOL_OPTIONS="${prev}"
             '';
         };
