@@ -60,7 +60,7 @@ cloche {
     }
 
     fabric("fabric:1.21.1") {
-        loaderVersion = "0.18.5"
+        loaderVersion = libs.versions.fabric.loader
         minecraftVersion = "1.21.1"
 
         mappings {
