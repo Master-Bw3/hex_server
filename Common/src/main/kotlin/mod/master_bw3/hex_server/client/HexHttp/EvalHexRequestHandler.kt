@@ -1,21 +1,23 @@
 package mod.master_bw3.hex_server.client.HexHttp
 
 import at.petrak.hexcasting.api.casting.eval.ExecutionClientView
-import mod.master_bw3.hex_server.network.HexServerNetworking
+import at.petrak.hexcasting.api.casting.iota.Iota
+import at.petrak.hexcasting.xplat.IClientXplatAbstractions
 import mod.master_bw3.hex_server.network.MsgEvaluateHexC2S
-import net.minecraft.nbt.NbtCompound
 import java.util.*
-import java.util.concurrent.*
+import java.util.concurrent.CompletableFuture
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.Future
 
 typealias HexFuture = CompletableFuture<ExecutionClientView>
 
 class EvalHexRequestHandler {
     private var pending: ConcurrentHashMap<UUID, HexFuture> = ConcurrentHashMap()
 
-    fun evaluateHex(hex: NbtCompound): Future<ExecutionClientView> {
+    fun evaluateHex(hex: List<Iota>): Future<ExecutionClientView> {
         val uuid = UUID.randomUUID()
         val future = HexFuture()
-        HexServerNetworking.sendToServer(MsgEvaluateHexC2S(hex, uuid))
+        IClientXplatAbstractions.INSTANCE.sendPacketToServer(MsgEvaluateHexC2S(hex, uuid))
         pending[uuid] = future
 
         return future

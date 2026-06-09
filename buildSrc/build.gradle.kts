@@ -4,7 +4,7 @@ import org.gradle.api.internal.artifacts.dependencies.DefaultMutableVersionConst
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
+        languageVersion.set(JavaLanguageVersion.of(21))
     }
 }
 
@@ -27,11 +27,7 @@ dependencies {
     implementation(libs.plugins.kotlin.jvm.toLibrary())
     implementation(libs.plugins.architectury.toLibrary())
     implementation(libs.plugins.architectury.loom.toLibrary())
-    implementation(libs.plugins.shadow.toLibrary())
     implementation(libs.plugins.modPublish.toLibrary())
-
-    // libraries used by script plugins
-    implementation(libs.pkpcpbp)
 
     // https://stackoverflow.com/a/70878181
     // https://github.com/gradle/gradle/issues/15383

@@ -11,4 +11,4 @@ pluginManagement {
 }
 
 rootProject.name = "Hex Server"
-include("Common", "Fabric", "Forge")
+include("Common", "Fabric")

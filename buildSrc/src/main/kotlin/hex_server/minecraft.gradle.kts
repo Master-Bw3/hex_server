@@ -6,7 +6,6 @@ import kotlin.io.path.div
 
 plugins {
     id("hex_server.java")
-    id("hex_server.utils.json5")
 
     `maven-publish`
     id("dev.architectury.loom")

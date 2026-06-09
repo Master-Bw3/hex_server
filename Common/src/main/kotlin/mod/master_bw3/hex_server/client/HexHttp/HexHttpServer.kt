@@ -1,23 +1,25 @@
 package mod.master_bw3.hex_server.client.HexHttp
 
 import at.petrak.hexcasting.api.casting.eval.ExecutionClientView
+import at.petrak.hexcasting.api.casting.iota.Iota
 import at.petrak.hexcasting.api.casting.iota.IotaType
+import at.petrak.hexcasting.api.casting.iota.ListIota
+import at.petrak.hexcasting.api.casting.math.HexPattern
+import at.petrak.hexcasting.api.casting.math.HexPattern.Companion.fromAnglesUnchecked
 import com.mojang.brigadier.exceptions.CommandSyntaxException
-import dev.architectury.platform.Platform
+import com.mojang.serialization.codecs.RecordCodecBuilder
 import io.ktor.http.*
-import io.ktor.server.application.*
 import io.ktor.server.engine.*
-import io.ktor.server.jetty.*
+import io.ktor.server.jetty.jakarta.Jetty
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import mod.master_bw3.hex_server.network.HexServerNetworking
-import mod.master_bw3.hex_server.network.MsgDebugHexC2S
 import net.minecraft.client.network.ClientPlayerEntity
 import net.minecraft.nbt.NbtCompound
+import net.minecraft.nbt.NbtOps
 import net.minecraft.nbt.StringNbtReader
-import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
+import kotlin.jvm.optionals.getOrNull
 
 internal class HexHttpServer(val player: ClientPlayerEntity, port: Int) {
     val hexRequestHandler = EvalHexRequestHandler()
@@ -32,9 +34,14 @@ internal class HexHttpServer(val player: ClientPlayerEntity, port: Int) {
                 val snbt = call.receiveParameters()["SNBT"]
 
                 val hex = parseSNBT(snbt)
+                    ?.let { REQUEST_CODEC.decode(NbtOps.INSTANCE, it).resultOrPartial() }
+                    ?.getOrNull()
+                    ?.first
+                    ?.hex
+
                 if (hex == null) {
                     call.response.status(HttpStatusCode.BadRequest)
-                    call.respondText { "Bad Request: invalid SNBT data" }
+                    call.respondText { "Bad Request: invalid NBT data" }
                     return@post
                 }
 
@@ -47,31 +54,31 @@ internal class HexHttpServer(val player: ClientPlayerEntity, port: Int) {
                 }
 
                 call.response.status(HttpStatusCode.OK)
-                call.respondText { result.stackDescs.joinToString("\n") { IotaType.getDisplay(it).string } }
+                call.respondText { result.stackDescs.joinToString("\n") { it.display().string } }
 
             }
 
-            post("/hexDebug") {
-                if (!Platform.isModLoaded("hexdebug")) {
-                    call.response.status(HttpStatusCode.NotImplemented)
-                    call.respondText { "Server Error: HexDebug is not installed" }
-                    return@post
-                }
-
-                val snbt = call.receiveParameters()["SNBT"]
-
-                val hex = parseSNBT(snbt)
-                if (hex == null) {
-                    call.response.status(HttpStatusCode.BadRequest)
-                    call.respondText { "Bad Request: invalid SNBT data" }
-                    return@post
-                }
-
-                HexServerNetworking.sendToServer(MsgDebugHexC2S(hex))
-
-                call.response.status(HttpStatusCode.OK)
-                call.respondText { "Hex successfully received for debugging" }
-            }
+//            post("/hexDebug") {
+//                if (!Platform.isModLoaded("hexdebug")) {
+//                    call.response.status(HttpStatusCode.NotImplemented)
+//                    call.respondText { "Server Error: HexDebug is not installed" }
+//                    return@post
+//                }
+//
+//                val snbt = call.receiveParameters()["SNBT"]
+//
+//                val hex = parseSNBT(snbt)
+//                if (hex == null) {
+//                    call.response.status(HttpStatusCode.BadRequest)
+//                    call.respondText { "Bad Request: invalid SNBT data" }
+//                    return@post
+//                }
+//
+//                IClientXplatAbstractions.INSTANCE.sendPacketToServer(MsgDebugHexC2S(hex))
+//
+//                call.response.status(HttpStatusCode.OK)
+//                call.respondText { "Hex successfully received for debugging" }
+//            }
         }
     }.start(wait = false)
 
@@ -86,4 +93,11 @@ internal class HexHttpServer(val player: ClientPlayerEntity, port: Int) {
             null
         }
     }
+}
+
+data class RequestHex(val hex: List<Iota>)
+
+val REQUEST_CODEC = RecordCodecBuilder.create { instance ->
+    instance.group(IotaType.TYPED_CODEC.listOf().fieldOf("hex").forGetter(RequestHex::hex))
+        .apply(instance, ::RequestHex)
 }

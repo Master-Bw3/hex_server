@@ -28,20 +28,13 @@ repositories {
     maven { url = uri("https://maven.terraformersmc.com/releases") }
     maven { url = uri("https://maven.theillusivec4.top") } // Caelus
     maven { url = uri("https://thedarkcolour.github.io/KotlinForForge") }
+    flatDir { dir(rootProject.file("libs")) }
     exclusiveContent {
         filter {
             includeGroup("maven.modrinth")
         }
         forRepository {
             maven { url = uri("https://api.modrinth.com/maven") }
-        }
-    }
-    exclusiveContent {
-        filter {
-            includeGroup("libs")
-        }
-        forRepository {
-            flatDir { dir(rootProject.file("libs")) }
         }
     }
 }

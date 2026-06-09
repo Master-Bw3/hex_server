@@ -6,6 +6,9 @@ architectury {
     fabric()
 }
 
+val includeTransitive by configurations.creating
+
+
 hexserverModDependencies {
     // expand versions in fabric.mod.json
     filesMatching.add("fabric.mod.json")
@@ -49,11 +52,12 @@ dependencies {
     // we use modLocalRuntime to add these to the development runtime, but not at compile time or for consumers of this project
     modLocalRuntime(libs.paucal.fabric)
     modLocalRuntime(libs.patchouli.fabric)
-    modLocalRuntime(libs.cardinalComponents)
-    modLocalRuntime(libs.serializationHooks)
-    modLocalRuntime(libs.trinkets)
+    modLocalRuntime(libs.cardinalComponents.base)
+    modLocalRuntime(libs.cardinalComponents.entity)
+    modLocalRuntime(libs.cardinalComponents.item)
+    modLocalRuntime(libs.cardinalComponents.block)
     modLocalRuntime(libs.inline.fabric)
-    modImplementation(libs.hexdebug.fabric)
+//    modImplementation(libs.hexdebug.fabric)
 
     // this is also a Hex dependency, but it's included in case you want to use it for stuff
     libs.mixinExtras.also {
@@ -66,9 +70,14 @@ dependencies {
     }
     modImplementation(libs.modMenu)
 
-    libs.bundles.ktor.also {
+    libs.bundles.ktor.get().forEach {
         implementation(it)
-        include(it)
+        includeTransitive(it)
+    }
+
+    libs.bundles.coroutines.get().forEach {
+        implementation(it)
+        includeTransitive(it)
     }
 }
 
@@ -86,6 +95,10 @@ publishMods {
         displayName = "v${project.version}"
         tagName = "v${project.version}"
     }
+}
+
+configurations.getByName("includeTransitive").resolvedConfiguration.resolvedArtifacts.forEach { dep ->
+    dependencies.add("include", dep.id.componentIdentifier.displayName)
 }
 
 tasks {

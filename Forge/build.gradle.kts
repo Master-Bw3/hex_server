@@ -77,12 +77,15 @@ dependencies {
         implementation(it)
         include(it)
     }
+
+    libs.bundles.coroutines.get().forEach {
+        implementation(it)
+        includeTransitive(it)
+    }
 }
 
 tasks {
-    shadowJar {
-        exclude("fabric.mod.json")
-    }
+
 
     named("runCommonDatagen") {
         doFirst {

@@ -6,7 +6,6 @@ plugins {
     id("hex_server.minecraft")
     id("hex_server.utils.mod-dependencies")
 
-    id("com.github.johnrengelman.shadow")
     id("me.modmuss50.mod-publish-plugin")
 }
 
@@ -24,7 +23,6 @@ architectury {
 
 configurations {
     register("common")
-    register("shadowCommon")
     compileClasspath {
         extendsFrom(get("common"))
     }
@@ -41,7 +39,6 @@ configurations {
 
 dependencies {
     "common"(project(":Common", "namedElements")) { isTransitive = false }
-    "shadowCommon"(project(":Common", "transformProduction$platformCapitalized")) { isTransitive = false }
 }
 
 sourceSets {
@@ -53,15 +50,7 @@ sourceSets {
 }
 
 tasks {
-    shadowJar {
-        exclude("architectury.common.json")
-        configurations = listOf(project.configurations["shadowCommon"])
-        archiveClassifier = "dev-shadow"
-    }
-
     remapJar {
-        dependsOn(shadowJar)
-        inputFile = shadowJar.get().archiveFile
         archiveClassifier = null
     }
 

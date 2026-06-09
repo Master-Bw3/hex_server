@@ -4,47 +4,41 @@ import at.petrak.hexcasting.api.casting.eval.env.PackagedItemCastEnv
 import at.petrak.hexcasting.api.casting.eval.vm.CastingVM
 import at.petrak.hexcasting.api.casting.iota.Iota
 import at.petrak.hexcasting.api.casting.iota.IotaType
-import at.petrak.hexcasting.common.lib.hex.HexIotaTypes
-import dev.architectury.networking.NetworkManager.PacketContext
+import at.petrak.hexcasting.xplat.IXplatAbstractions
 import mod.master_bw3.hex_server.HexServer
-import net.minecraft.nbt.NbtCompound
-import net.minecraft.nbt.NbtElement
-import net.minecraft.nbt.NbtList
-import net.minecraft.network.PacketByteBuf
+import net.minecraft.network.codec.PacketCodec
+import net.minecraft.network.codec.PacketCodecs
+import net.minecraft.network.packet.CustomPayload
+import net.minecraft.server.MinecraftServer
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.server.world.ServerWorld
 import net.minecraft.util.Hand
-import java.util.UUID
-import java.util.function.Supplier
+import net.minecraft.util.Uuids
+import java.util.*
 
-data class MsgEvaluateHexC2S(private val hex: NbtCompound, private val id: UUID) : Message<Side.C2S> {
-    constructor(buf: PacketByteBuf) : this(buf.readNbt()!!, buf.readUuid())
+data class MsgEvaluateHexC2S(val hex: List<Iota>, val id: UUID ) : CustomPayload {
+    override fun getId(): CustomPayload.Id<out CustomPayload> = TYPE
 
-    override fun encode(buf: PacketByteBuf) {
-        buf.writeNbt(hex)
-        buf.writeUuid(id)
+
+    fun handle(server: MinecraftServer, sender: ServerPlayerEntity) {
+        server.execute {
+            val world = sender.world as ServerWorld
+
+            val castingContext = PackagedItemCastEnv(sender, Hand.MAIN_HAND)
+            val harness = CastingVM.empty(castingContext)
+            val result = harness.queueExecuteAndWrapIotas(hex, world)
+
+            IXplatAbstractions.INSTANCE.sendPacketToPlayer(sender, MsgEvaluateHexS2C(result, id))
+        }
     }
 
-    override fun apply(supplier: Supplier<PacketContext>) {
-        val ctx = supplier.get()
-        val player = ctx.player
-        player.server!!.execute {
-            val world = player.world as ServerWorld
+    companion object {
+        val TYPE = CustomPayload.Id<MsgEvaluateHexC2S>(HexServer.id("eval_hex_cs"))
 
-            val nbtList: List<NbtElement> = hex.getList("hexcasting:data", NbtElement.COMPOUND_TYPE.toInt())
-            val instrs: MutableList<Iota> = ArrayList()
-            for (nbtElement in nbtList) {
-                val iota = IotaType.deserialize(nbtElement as NbtCompound, world)
-                instrs.add(iota)
-            }
-            val sPlayer: ServerPlayerEntity = player as ServerPlayerEntity
-            val castingContext = PackagedItemCastEnv(sPlayer, Hand.MAIN_HAND)
-            val harness = CastingVM.empty(castingContext)
-            val result = harness.queueExecuteAndWrapIotas(instrs, world)
-
-
-
-            HexServerNetworking.sendToPlayer(player, MsgEvaluateHexS2C(result, id))
-        }
+        val STREAM_CODEC = PacketCodec.tuple(
+            IotaType.TYPED_STREAM_CODEC.collect(PacketCodecs.toList()), MsgEvaluateHexC2S::hex,
+            Uuids.PACKET_CODEC, MsgEvaluateHexC2S::id,
+            ::MsgEvaluateHexC2S
+        )
     }
 }
