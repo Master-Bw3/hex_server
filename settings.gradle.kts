@@ -1,14 +1,17 @@
+dependencyResolutionManagement {
+    versionCatalogs {
+        create("libs") {
+            from(files("libs.versions.toml"))
+        }
+    }
+}
+
 pluginManagement {
     repositories {
         // Repositories where you can get 
         mavenCentral()
         gradlePluginPortal()
-        maven { url = uri("https://maven.architectury.dev/") }
-        maven { url = uri("https://maven.fabricmc.net/") }
-        maven { url = uri("https://maven.minecraftforge.net/") }
-        maven { url = uri("https://maven.blamejared.com/") }
+        maven("https://maven.msrandom.net/repository/cloche/")
+        maven("https://maven.blamejared.com/")
     }
 }
-
-rootProject.name = "Hex Server"
-include("Common", "Fabric")
