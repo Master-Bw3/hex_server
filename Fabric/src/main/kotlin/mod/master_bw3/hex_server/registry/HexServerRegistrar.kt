@@ -3,7 +3,7 @@ package mod.master_bw3.hex_server.registry
 import net.minecraft.registry.RegistryKey
 import net.minecraft.util.Identifier
 import dev.architectury.platform.Platform
-import mod.master_bw3.hex_server.HexServer
+import mod.master_bw3.hex_server.fabric.FabricHexServer
 import net.fabricmc.api.EnvType
 import net.minecraft.registry.Registry
 
@@ -37,7 +37,7 @@ abstract class HexServerRegistrar<T>(
 
     open fun initClient() {}
 
-    fun <V : T> register(name: String, builder: () -> V) = register(HexServer.id(name), builder)
+    fun <V : T> register(name: String, builder: () -> V) = register(FabricHexServer.id(name), builder)
 
     fun <V : T> register(id: Identifier, builder: () -> V) = register(id, lazy {
         if (!isInitialized) throw IllegalStateException("$this has not been initialized!")

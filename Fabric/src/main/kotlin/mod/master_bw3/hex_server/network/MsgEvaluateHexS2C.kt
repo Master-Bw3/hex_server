@@ -1,8 +1,8 @@
 package mod.master_bw3.hex_server.network
 
 import at.petrak.hexcasting.api.casting.eval.ExecutionClientView
-import mod.master_bw3.hex_server.HexServer
 import mod.master_bw3.hex_server.client.HexHttp.HexHttpServerManager
+import mod.master_bw3.hex_server.fabric.FabricHexServer
 import net.minecraft.client.MinecraftClient
 import net.minecraft.network.codec.PacketCodec
 import net.minecraft.network.packet.CustomPayload
@@ -21,7 +21,7 @@ data class MsgEvaluateHexS2C(val result: ExecutionClientView, val id: UUID) : Cu
 
 
     companion object {
-        val TYPE = CustomPayload.Id<MsgEvaluateHexS2C>(HexServer.id("eval_hex_sc"))
+        val TYPE = CustomPayload.Id<MsgEvaluateHexS2C>(FabricHexServer.id("eval_hex_sc"))
 
         val STREAM_CODEC = PacketCodec.tuple(
             ExecutionClientView.STREAM_CODEC, MsgEvaluateHexS2C::result,

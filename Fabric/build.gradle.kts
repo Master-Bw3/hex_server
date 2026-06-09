@@ -97,9 +97,13 @@ publishMods {
     }
 }
 
-configurations.getByName("includeTransitive").resolvedConfiguration.resolvedArtifacts.forEach { dep ->
-    dependencies.add("include", dep.id.componentIdentifier.displayName)
-}
+configurations.getByName("includeTransitive")
+    .resolvedConfiguration
+    .resolvedArtifacts
+    .filterNot { it.moduleVersion.id.group == "org.ow2.asm" }
+    .forEach { dep ->
+        dependencies.add("include", dep.id.componentIdentifier.displayName)
+    }
 
 tasks {
     named("publishGithub") {

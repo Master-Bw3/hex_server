@@ -5,7 +5,7 @@ import at.petrak.hexcasting.api.casting.eval.vm.CastingVM
 import at.petrak.hexcasting.api.casting.iota.Iota
 import at.petrak.hexcasting.api.casting.iota.IotaType
 import at.petrak.hexcasting.xplat.IXplatAbstractions
-import mod.master_bw3.hex_server.HexServer
+import mod.master_bw3.hex_server.fabric.FabricHexServer
 import net.minecraft.network.codec.PacketCodec
 import net.minecraft.network.codec.PacketCodecs
 import net.minecraft.network.packet.CustomPayload
@@ -33,7 +33,7 @@ data class MsgEvaluateHexC2S(val hex: List<Iota>, val id: UUID ) : CustomPayload
     }
 
     companion object {
-        val TYPE = CustomPayload.Id<MsgEvaluateHexC2S>(HexServer.id("eval_hex_cs"))
+        val TYPE = CustomPayload.Id<MsgEvaluateHexC2S>(FabricHexServer.id("eval_hex_cs"))
 
         val STREAM_CODEC = PacketCodec.tuple(
             IotaType.TYPED_STREAM_CODEC.collect(PacketCodecs.toList()), MsgEvaluateHexC2S::hex,

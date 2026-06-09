@@ -26,7 +26,7 @@ dependencies {
 
     mappings(variantOf(libs.yarn) { classifier("v2") })
 
-    annotationProcessor(libs.bundles.asm)
+//    annotationProcessor(libs.bundles.asm)
 }
 
 sourceSets {

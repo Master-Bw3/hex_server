@@ -3,9 +3,6 @@ package mod.master_bw3.hex_server.client.HexHttp
 import at.petrak.hexcasting.api.casting.eval.ExecutionClientView
 import at.petrak.hexcasting.api.casting.iota.Iota
 import at.petrak.hexcasting.api.casting.iota.IotaType
-import at.petrak.hexcasting.api.casting.iota.ListIota
-import at.petrak.hexcasting.api.casting.math.HexPattern
-import at.petrak.hexcasting.api.casting.math.HexPattern.Companion.fromAnglesUnchecked
 import com.mojang.brigadier.exceptions.CommandSyntaxException
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import io.ktor.http.*
