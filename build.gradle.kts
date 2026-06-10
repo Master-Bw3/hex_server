@@ -205,3 +205,8 @@ configurations.configureEach {
         "org.ow2.asm:asm-analysis:9.8"
     )
 }
+
+// don't fucking question it
+tasks.named("compileKotlin") {
+    enabled = false
+}
