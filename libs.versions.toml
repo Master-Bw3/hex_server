@@ -49,10 +49,42 @@ modPublish = "0.5.1"
 
 ktor = "3.4.1"
 coroutines = "1.10.2"
+asm = "9.8"
+
+jetty = "12.0.29"
+jakarta-servlet = "6.0.0"
+jakarta-websocket = "2.1.1"
+jakarta-cdi = "4.0.1"
+jakarta-interceptor = "2.1.0"
+jakarta-annotation = "2.1.1"
+jakarta-transaction = "2.0.1"
+jakarta-el = "5.0.0"
+jakarta-inject = "2.0.1"
+
+slf4j = "2.0.17"
+config = "1.4.5"
+kotlin-reflect = "2.3.0"
+kotlinx-serialization = "1.9.0"
+kotlinx-io = "0.8.2"
+jansi = "2.4.2"
+annotations = "23.0.0"
 
 [bundles]
-ktor = ["ktor-server-core", "ktor-server-jetty-jakarta", "ktor-server-websockets" ]
+ktor = ["ktor-server-core", "ktor-server-jetty-jakarta", "ktor-server-websockets"]
 coroutines = ["coroutines", "coroutines-jvm"]
+asm = ["asm", "asm-analysis", "asm-commons", "asm-tree", "asm-util"]
+ktor-deps = ["ktor-server-websockets-jvm", "ktor-server-jetty-jakarta-jvm", "ktor-server-servlet-jakarta-jvm", "ktor-server-core-jvm",
+    "ktor-http-cio-jvm", "ktor-websocket-serialization-jvm", "ktor-serialization-jvm", "ktor-websockets-jvm", "ktor-http-jvm",
+    "ktor-events-jvm", "ktor-network-jvm", "ktor-utils-jvm", "ktor-io-jvm", "jetty-alpn-java-server", "jetty-alpn-server",
+    "jetty-http2-server", "jetty-ee10-websocket-jakarta-server", "jetty-ee10-websocket-servlet", "jetty-ee10-annotations",
+    "jetty-ee10-plus", "jetty-ee10-webapp", "jetty-ee10-servlet", "jetty-websocket-core-server", "jetty-ee", "jetty-session",
+    "jetty-plus", "jetty-security", "jetty-server", "jetty-ee10-servlets", "jetty-ee10-websocket-jakarta-client",
+    "jetty-ee10-websocket-jakarta-common", "jetty-websocket-core-client", "jetty-client", "jetty-http2-common", "jetty-http2-hpack",
+    "jetty-websocket-core-common", "jetty-http", "jetty-alpn-client", "jetty-io", "jetty-jndi", "jetty-xml", "jetty-util",
+    "config", "kotlin-reflect", "kotlinx-serialization-core-jvm", "kotlinx-io-core-jvm", "kotlinx-io-bytestring-jvm",
+    "jansi", "annotations", "jakarta-servlet-api", "jakarta-websocket-api", "jakarta-enterprise-cdi-api",
+    "jakarta-interceptor-api", "jakarta-annotation-api", "jakarta-websocket-client-api", "jakarta-enterprise-lang-model",
+    "jakarta-transaction-api", "jakarta-el-api", "jakarta-inject-api"]
 
 [libraries]
 kotlin-stdlib = { module="org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref="kotlin" }
@@ -101,9 +133,81 @@ inline-forge  = { module="com.samsthenerd.inline:inline-forge", version.ref="inl
 ktor-server-core = { module = "io.ktor:ktor-server-core-jvm", version.ref = "ktor" }
 ktor-server-jetty-jakarta = { module = "io.ktor:ktor-server-jetty-jakarta", version.ref = "ktor" }
 ktor-server-websockets = { module = "io.ktor:ktor-server-websockets-jvm", version.ref = "ktor" }
+ktor-server-core-jvm = { module = "io.ktor:ktor-server-core-jvm", version.ref = "ktor" }
+ktor-server-jetty-jakarta-jvm = { module = "io.ktor:ktor-server-jetty-jakarta-jvm", version.ref = "ktor" }
+ktor-server-servlet-jakarta-jvm = { module = "io.ktor:ktor-server-servlet-jakarta-jvm", version.ref = "ktor" }
+ktor-server-websockets-jvm = { module = "io.ktor:ktor-server-websockets-jvm", version.ref = "ktor" }
+ktor-http-cio-jvm = { module = "io.ktor:ktor-http-cio-jvm", version.ref = "ktor" }
+ktor-websocket-serialization-jvm = { module = "io.ktor:ktor-websocket-serialization-jvm", version.ref = "ktor" }
+ktor-serialization-jvm = { module = "io.ktor:ktor-serialization-jvm", version.ref = "ktor" }
+ktor-websockets-jvm = { module = "io.ktor:ktor-websockets-jvm", version.ref = "ktor" }
+ktor-http-jvm = { module = "io.ktor:ktor-http-jvm", version.ref = "ktor" }
+ktor-events-jvm = { module = "io.ktor:ktor-events-jvm", version.ref = "ktor" }
+ktor-network-jvm = { module = "io.ktor:ktor-network-jvm", version.ref = "ktor" }
+ktor-utils-jvm = { module = "io.ktor:ktor-utils-jvm", version.ref = "ktor" }
+ktor-io-jvm = { module = "io.ktor:ktor-io-jvm", version.ref = "ktor" }
+
+jetty-alpn-java-server = { module = "org.eclipse.jetty:jetty-alpn-java-server", version.ref = "jetty" }
+jetty-alpn-server = { module = "org.eclipse.jetty:jetty-alpn-server", version.ref = "jetty" }
+jetty-http2-server = { module = "org.eclipse.jetty.http2:jetty-http2-server", version.ref = "jetty" }
+jetty-ee10-websocket-jakarta-server = { module = "org.eclipse.jetty.ee10.websocket:jetty-ee10-websocket-jakarta-server", version.ref = "jetty" }
+jetty-ee10-websocket-servlet = { module = "org.eclipse.jetty.ee10.websocket:jetty-ee10-websocket-servlet", version.ref = "jetty" }
+jetty-ee10-annotations = { module = "org.eclipse.jetty.ee10:jetty-ee10-annotations", version.ref = "jetty" }
+jetty-ee10-plus = { module = "org.eclipse.jetty.ee10:jetty-ee10-plus", version.ref = "jetty" }
+jetty-ee10-webapp = { module = "org.eclipse.jetty.ee10:jetty-ee10-webapp", version.ref = "jetty" }
+jetty-ee10-servlet = { module = "org.eclipse.jetty.ee10:jetty-ee10-servlet", version.ref = "jetty" }
+jetty-websocket-core-server = { module = "org.eclipse.jetty.websocket:jetty-websocket-core-server", version.ref = "jetty" }
+jetty-ee = { module = "org.eclipse.jetty:jetty-ee", version.ref = "jetty" }
+jetty-session = { module = "org.eclipse.jetty:jetty-session", version.ref = "jetty" }
+jetty-plus = { module = "org.eclipse.jetty:jetty-plus", version.ref = "jetty" }
+jetty-security = { module = "org.eclipse.jetty:jetty-security", version.ref = "jetty" }
+jetty-server = { module = "org.eclipse.jetty:jetty-server", version.ref = "jetty" }
+jetty-ee10-servlets = { module = "org.eclipse.jetty.ee10:jetty-ee10-servlets", version.ref = "jetty" }
+jetty-ee10-websocket-jakarta-client = { module = "org.eclipse.jetty.ee10.websocket:jetty-ee10-websocket-jakarta-client", version.ref = "jetty" }
+jetty-ee10-websocket-jakarta-common = { module = "org.eclipse.jetty.ee10.websocket:jetty-ee10-websocket-jakarta-common", version.ref = "jetty" }
+jetty-websocket-core-client = { module = "org.eclipse.jetty.websocket:jetty-websocket-core-client", version.ref = "jetty" }
+jetty-client = { module = "org.eclipse.jetty:jetty-client", version.ref = "jetty" }
+jetty-http2-common = { module = "org.eclipse.jetty.http2:jetty-http2-common", version.ref = "jetty" }
+jetty-http2-hpack = { module = "org.eclipse.jetty.http2:jetty-http2-hpack", version.ref = "jetty" }
+jetty-websocket-core-common = { module = "org.eclipse.jetty.websocket:jetty-websocket-core-common", version.ref = "jetty" }
+jetty-http = { module = "org.eclipse.jetty:jetty-http", version.ref = "jetty" }
+jetty-alpn-client = { module = "org.eclipse.jetty:jetty-alpn-client", version.ref = "jetty" }
+jetty-io = { module = "org.eclipse.jetty:jetty-io", version.ref = "jetty" }
+jetty-jndi = { module = "org.eclipse.jetty:jetty-jndi", version.ref = "jetty" }
+jetty-xml = { module = "org.eclipse.jetty:jetty-xml", version.ref = "jetty" }
+jetty-util = { module = "org.eclipse.jetty:jetty-util", version.ref = "jetty" }
+
+slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
+
+config = { module = "com.typesafe:config", version.ref = "config" }
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin-reflect" }
+kotlinx-serialization-core-jvm = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core-jvm", version.ref = "kotlinx-serialization" }
+kotlinx-io-core-jvm = { module = "org.jetbrains.kotlinx:kotlinx-io-core-jvm", version.ref = "kotlinx-io" }
+kotlinx-io-bytestring-jvm = { module = "org.jetbrains.kotlinx:kotlinx-io-bytestring-jvm", version.ref = "kotlinx-io" }
+jansi = { module = "org.fusesource.jansi:jansi", version.ref = "jansi" }
+annotations = { module = "org.jetbrains:annotations", version.ref = "annotations" }
+
+jakarta-servlet-api = { module = "jakarta.servlet:jakarta.servlet-api", version.ref = "jakarta-servlet" }
+jakarta-websocket-api = { module = "jakarta.websocket:jakarta.websocket-api", version.ref = "jakarta-websocket" }
+jakarta-websocket-client-api = { module = "jakarta.websocket:jakarta.websocket-client-api", version.ref = "jakarta-websocket" }
+
+jakarta-enterprise-cdi-api = { module = "jakarta.enterprise:jakarta.enterprise.cdi-api", version.ref = "jakarta-cdi" }
+jakarta-enterprise-lang-model = { module = "jakarta.enterprise:jakarta.enterprise.lang-model", version.ref = "jakarta-cdi" }
+
+jakarta-interceptor-api = { module = "jakarta.interceptor:jakarta.interceptor-api", version.ref = "jakarta-interceptor" }
+jakarta-annotation-api = { module = "jakarta.annotation:jakarta.annotation-api", version.ref = "jakarta-annotation" }
+jakarta-transaction-api = { module = "jakarta.transaction:jakarta.transaction-api", version.ref = "jakarta-transaction" }
+jakarta-el-api = { module = "jakarta.el:jakarta.el-api", version.ref = "jakarta-el" }
+jakarta-inject-api = { module = "jakarta.inject:jakarta.inject-api", version.ref = "jakarta-inject" }
 
 coroutines = { module="org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref="coroutines"}
 coroutines-jvm = { module="org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm", version.ref="coroutines"}
+
+asm          = { module="org.ow2.asm:asm", version.ref="asm" }
+asm-analysis = { module="org.ow2.asm:asm-analysis", version.ref="asm" }
+asm-commons  = { module="org.ow2.asm:asm-commons", version.ref="asm" }
+asm-tree     = { module="org.ow2.asm:asm-tree", version.ref="asm" }
+asm-util     = { module="org.ow2.asm:asm-util", version.ref="asm" }
 
 serializationHooks = { module="libs:serialization-hooks", version.ref="serializationHooks" }
 

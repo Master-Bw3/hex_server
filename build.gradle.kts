@@ -1,3 +1,5 @@
+import java.awt.AWTEventMulticaster.add
+
 plugins {
     alias(libs.plugins.cloche)
     alias(libs.plugins.kotlin.jvm)
@@ -53,12 +55,23 @@ cloche {
     common {
         dependencies {
             compileOnly("org.spongepowered:mixin:0.8.5")
+
+            libs.bundles.ktor.asProvider().get().forEach {
+                compileOnly(it) {
+                    exclude("org.slf4j")
+                    exclude("org.ow2.asm")
+                }
+            }
+
+            libs.bundles.coroutines.get().forEach {
+                compileOnly(it)
+            }
         }
 
-//        mappings {
-//            official()
-//            parchment("2024.11.17")
-//        }
+        mappings {
+            official()
+            parchment("2024.11.17")
+        }
 
         metadata {
         }
@@ -79,6 +92,21 @@ cloche {
         dependencies {
             fabricApi(libs.versions.fabric.api)
             modImplementation(libs.kotlin.fabric)
+
+            libs.bundles.ktor.asProvider().get().forEach {
+                implementation(it)
+                include(it)
+            }
+
+            libs.bundles.ktor.deps.get().forEach {
+                include(it)
+            }
+
+            libs.bundles.coroutines.get().forEach {
+                implementation(it)
+                include(it)
+            }
+
         }
 
         runs {
@@ -104,6 +132,33 @@ cloche {
     neoforge("neoforge:1.21.1") {
         loaderVersion = "21.1.233"
         minecraftVersion = "1.21.1"
+
+        mappings {
+            official()
+            parchment("2024.11.17")
+        }
+
+        dependencies {
+            libs.bundles.ktor.asProvider().get().forEach {
+                modApi(it) {
+                    exclude("org.slf4j")
+                    exclude("org.ow2.asm")
+                }
+            }
+
+            libs.bundles.ktor.deps.get().forEach {
+                include(it) {
+                    exclude("org.slf4j")
+                    exclude("org.ow2.asm")
+                }
+            }
+
+            libs.bundles.coroutines.get().forEach {
+                modApi(it)
+                include(it)
+            }
+
+        }
 
         runs {
             client {
