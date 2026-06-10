@@ -75,7 +75,12 @@ cloche {
                 modCompileOnly(it)
             }
 
-            compileOnly("mod.master_bw3:BundledKtor-1.0.0")
+            libs.bundles.ktor.get().forEach {
+                modCompileOnly(it)
+            }
+            libs.bundles.coroutines.get().forEach {
+                modCompileOnly(it)
+            }
         }
 
 
@@ -114,8 +119,10 @@ cloche {
             modImplementation(libs.modMenu)
 
             // ktor
-            implementation("mod.master_bw3:BundledKtor-1.0.0")
-            include("mod.master_bw3:BundledKtor-1.0.0")
+            libs.bundles.ktor.get().forEach {
+                implementation(it)
+                include(it)
+            }
         }
 
         runs {
@@ -157,8 +164,10 @@ cloche {
             }
             modRuntimeOnly(libs.architectury.neoforge)
 
-            implementation("mod.master_bw3:BundledKtor-1.0.0")
-            include("mod.master_bw3:BundledKtor-1.0.0")
+            libs.bundles.ktor.get().forEach {
+                implementation(it)
+                include(it)
+            }
         }
 
         runs {

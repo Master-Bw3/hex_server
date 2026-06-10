@@ -1,13 +1,8 @@
 dependencyResolutionManagement {
-    repositories {
-        mavenCentral()
-    }
-
     versionCatalogs {
         create("libs") {
             from(files("libs.versions.toml"))
         }
-        create("ktorLibs").from("io.ktor:ktor-version-catalog:3.5.0")
     }
 }
 
@@ -20,5 +15,3 @@ pluginManagement {
         maven("https://maven.blamejared.com/")
     }
 }
-
-include(":BundledKtor")

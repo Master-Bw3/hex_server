@@ -77,10 +77,8 @@ jansi = "2.4.2"
 annotations = "23.0.0"
 
 [bundles]
-ktor = ["ktor-server-core", "ktor-server-jetty-jakarta", "ktor-server-websockets"]
-coroutines = ["coroutines", "coroutines-jvm"]
-asm = ["asm", "asm-analysis", "asm-commons", "asm-tree", "asm-util"]
-ktor-deps = ["ktor-server-websockets-jvm", "ktor-server-jetty-jakarta-jvm", "ktor-server-servlet-jakarta-jvm", "ktor-server-core-jvm",
+ktor = ["ktor-server-core", "ktor-server-jetty-jakarta", "ktor-server-websockets", "ktor-server-websockets-jvm",
+    "ktor-server-jetty-jakarta-jvm", "ktor-server-servlet-jakarta-jvm", "ktor-server-core-jvm",
     "ktor-http-cio-jvm", "ktor-websocket-serialization-jvm", "ktor-serialization-jvm", "ktor-websockets-jvm", "ktor-http-jvm",
     "ktor-events-jvm", "ktor-network-jvm", "ktor-utils-jvm", "ktor-io-jvm", "jetty-alpn-java-server", "jetty-alpn-server",
     "jetty-http2-server", "jetty-ee10-websocket-jakarta-server", "jetty-ee10-websocket-servlet", "jetty-ee10-annotations",
@@ -92,6 +90,9 @@ ktor-deps = ["ktor-server-websockets-jvm", "ktor-server-jetty-jakarta-jvm", "kto
     "jansi", "jakarta-servlet-api", "jakarta-websocket-api", "jakarta-enterprise-cdi-api",
     "jakarta-interceptor-api", "jakarta-annotation-api", "jakarta-websocket-client-api", "jakarta-enterprise-lang-model",
     "jakarta-transaction-api", "jakarta-el-api", "jakarta-inject-api"]
+
+coroutines = ["coroutines", "coroutines-jvm"]
+asm = ["asm", "asm-analysis", "asm-commons", "asm-tree", "asm-util"]
 cardinalComponents = ["cardinalComponents-base", "cardinalComponents-entity", "cardinalComponents-item", "cardinalComponents-block"]
 hexcasting-fabric = ["hexcasting-fabric", "paucal-fabric", "patchouli-fabric", "clothConfig-fabric", "inline-fabric", "accessories-fabric"]
 hexcasting-neoforge = ["hexcasting-neoforge", "paucal-neoforge", "patchouli-neoforge", "clothConfig-neoforge", "inline-neoforge", "accessories-neoforge", "caelus-neoforge"]
