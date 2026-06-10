@@ -55,6 +55,11 @@ cloche {
             compileOnly("org.spongepowered:mixin:0.8.5")
         }
 
+//        mappings {
+//            official()
+//            parchment("2024.11.17")
+//        }
+
         metadata {
         }
     }
@@ -65,9 +70,11 @@ cloche {
 
         mappings {
             official()
+            parchment("2024.11.17")
         }
 
-        client()
+//        client()
+        includedClient()
 
         dependencies {
             fabricApi(libs.versions.fabric.api)
@@ -84,7 +91,12 @@ cloche {
 
         metadata {
             entrypoint("main") {
-                value = "mod.master_bw3.hex_server.HexServerFabric"
+                value = "mod.master_bw3.hex_server.FabricHexServer"
+                adapter = "kotlin"
+            }
+            entrypoint("client") {
+                value = "mod.master_bw3.hex_server.client.FabricHexServerClient"
+                adapter = "kotlin"
             }
         }
     }

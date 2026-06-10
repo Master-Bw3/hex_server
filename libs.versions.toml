@@ -14,7 +14,7 @@ kotlin-forge  = "4.10.0"
 minecraft = "1.21.1"
 yarn      = "1.21.1+build.3"
 
-cloche = "0.18.14"
+cloche = "0.18.15"
 
 fabric-loader = "0.19.3"
 fabric-api    = "0.116.12"
