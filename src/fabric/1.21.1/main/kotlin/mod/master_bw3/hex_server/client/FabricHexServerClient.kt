@@ -1,9 +1,15 @@
 package mod.master_bw3.hex_server.client
 
+import mod.master_bw3.hex_server.FabricPacketHandler
+import mod.master_bw3.hex_server.HexServerClient
 import net.fabricmc.api.ClientModInitializer
+import net.fabricmc.api.EnvType
+import net.fabricmc.api.Environment
 
-class FabricHexServerClient : ClientModInitializer {
+@Environment(EnvType.CLIENT)
+object FabricHexServerClient : ClientModInitializer {
     override fun onInitializeClient() {
-        println("Hello Fabric Client World")
+        HexServerClient.init()
+        FabricPacketHandler.initClient()
     }
 }

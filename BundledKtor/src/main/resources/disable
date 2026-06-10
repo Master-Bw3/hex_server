@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "id": "mod_master_bw3_bundledktor-1_0_0",
+  "version": "1_0_0",
+  "name": "BundledKtor-1.0.0",
+  "custom": {
+    "fabric-loom:generated": true
+  }
+}

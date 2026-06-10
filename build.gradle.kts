@@ -1,3 +1,6 @@
+import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     alias(libs.plugins.cloche)
     alias(libs.plugins.kotlin.jvm)
@@ -31,6 +34,9 @@ repositories {
     maven("https://maven.terraformersmc.com/releases")
     maven("https://thedarkcolour.github.io/KotlinForForge")
     maven("https://jitpack.io")
+    maven("https://maven.su5ed.dev/releases")
+    maven("https://maven.theillusivec4.top/")
+    maven("https://maven.wispforest.io/releases")
 
     flatDir { dir(rootProject.file("libs")) }
 
@@ -55,25 +61,23 @@ cloche {
     }
 
     common {
-        dependencies {
-            compileOnly("org.spongepowered:mixin:0.8.5")
-
-            libs.bundles.ktor.asProvider().get().forEach {
-                compileOnly(it) {
-                    exclude("org.slf4j")
-                    exclude("org.ow2.asm")
-                }
-            }
-
-            libs.bundles.coroutines.get().forEach {
-                compileOnly(it)
-            }
-        }
 
         mappings {
             official()
             parchment("2024.11.17")
         }
+
+        dependencies {
+            compileOnly("org.spongepowered:mixin:0.8.5")
+            modCompileOnly(libs.forgifiedFabricApi)
+
+            libs.bundles.hexcasting.neoforge.get().forEach {
+                modCompileOnly(it)
+            }
+
+            compileOnly("mod.master_bw3:BundledKtor-1.0.0")
+        }
+
 
         metadata {
         }
@@ -96,41 +100,22 @@ cloche {
             modImplementation(libs.kotlin.fabric)
 
             // hex casting + deps
-            modApi(libs.hexcasting.fabric) {
-                // If not excluded here, calls a nonexistent method and crashes the dev client
-                exclude(module = "phosphor")
+            libs.bundles.hexcasting.fabric.get().forEach {
+                modImplementation(it)
             }
-            modLocalRuntime(libs.architectury.fabric) {
-                exclude(group = "net.fabricmc", module = "fabric-loader")
-            }
-            modLocalRuntime(libs.paucal.fabric)
-            modLocalRuntime(libs.patchouli.fabric)
-//            modLocalRuntime(libs.serializationHooks)
-            modLocalRuntime(libs.inline.fabric)
-
             libs.bundles.cardinalComponents.get().forEach {
-                modLocalRuntime(it)
+                modImplementation(it)
             }
+            modRuntimeOnly(libs.architectury.fabric)
 
-            modApi(libs.clothConfig.fabric) {
+            modImplementation(libs.clothConfig.fabric) {
                 exclude(group = "net.fabricmc.fabric-api")
             }
             modImplementation(libs.modMenu)
 
             // ktor
-            libs.bundles.ktor.asProvider().get().forEach {
-                implementation(it)
-                include(it)
-            }
-
-            libs.bundles.ktor.deps.get().forEach {
-                include(it)
-            }
-
-            libs.bundles.coroutines.get().forEach {
-                implementation(it)
-                include(it)
-            }
+            implementation("mod.master_bw3:BundledKtor-1.0.0")
+            include("mod.master_bw3:BundledKtor-1.0.0")
         }
 
         runs {
@@ -154,7 +139,7 @@ cloche {
     }
 
     neoforge("neoforge:1.21.1") {
-        loaderVersion = "21.1.233"
+        loaderVersion = libs.versions.neoforge
         minecraftVersion = "1.21.1"
 
         mappings {
@@ -163,25 +148,17 @@ cloche {
         }
 
         dependencies {
-            libs.bundles.ktor.asProvider().get().forEach {
-                modApi(it) {
-                    exclude("org.slf4j")
-                    exclude("org.ow2.asm")
-                }
-            }
+            modImplementation(libs.forgifiedFabricApi)
+            modImplementation(libs.kotlin.forge)
 
-            libs.bundles.ktor.deps.get().forEach {
-                include(it) {
-                    exclude("org.slf4j")
-                    exclude("org.ow2.asm")
-                }
+            // hex casting + deps
+            libs.bundles.hexcasting.neoforge.get().forEach {
+                modImplementation(it)
             }
+            modRuntimeOnly(libs.architectury.neoforge)
 
-            libs.bundles.coroutines.get().forEach {
-                modApi(it)
-                include(it)
-            }
-
+            implementation("mod.master_bw3:BundledKtor-1.0.0")
+            include("mod.master_bw3:BundledKtor-1.0.0")
         }
 
         runs {
@@ -190,5 +167,32 @@ cloche {
             }
             server()
         }
+
+        metadata {
+            modLoader = "kotlinforforge"
+        }
     }
+}
+
+tasks.withType<KotlinCompile>().configureEach {
+    compilerOptions {
+        languageVersion = KotlinVersion.KOTLIN_2_2
+        freeCompilerArgs.addAll(
+            "-Xmulti-platform",
+            "-Xno-check-actual",
+            "-Xexpect-actual-classes",
+        )
+    }
+}
+
+configurations.configureEach {
+    resolutionStrategy.force("org.slf4j:slf4j-api:2.0.9")
+
+    resolutionStrategy.force(
+        "org.ow2.asm:asm:9.8",
+        "org.ow2.asm:asm-tree:9.8",
+        "org.ow2.asm:asm-commons:9.8",
+        "org.ow2.asm:asm-util:9.8",
+        "org.ow2.asm:asm-analysis:9.8"
+    )
 }
