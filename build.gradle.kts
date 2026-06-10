@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "mod.master_bw3.hex_server"
-version = "0.1.0"
+version = "0.1.1"
 
 kotlin {
     jvmToolchain(21)
