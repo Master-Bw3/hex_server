@@ -1,5 +1,3 @@
-import java.awt.AWTEventMulticaster.add
-
 plugins {
     alias(libs.plugins.cloche)
     alias(libs.plugins.kotlin.jvm)
@@ -24,6 +22,7 @@ repositories {
     mavenLocal()
     mavenCentral()
     maven("https://maven.blamejared.com")
+    maven("https://maven.shedaniel.me")
     maven("https://maven.fabricmc.net/")
     maven("https://maven.ladysnake.org/releases")
     maven("https://maven.minecraftforge.net/")
@@ -31,6 +30,9 @@ repositories {
     maven("https://maven.shedaniel.me")
     maven("https://maven.terraformersmc.com/releases")
     maven("https://thedarkcolour.github.io/KotlinForForge")
+    maven("https://jitpack.io")
+
+    flatDir { dir(rootProject.file("libs")) }
 
     exclusiveContent {
         filter {
@@ -93,6 +95,29 @@ cloche {
             fabricApi(libs.versions.fabric.api)
             modImplementation(libs.kotlin.fabric)
 
+            // hex casting + deps
+            modApi(libs.hexcasting.fabric) {
+                // If not excluded here, calls a nonexistent method and crashes the dev client
+                exclude(module = "phosphor")
+            }
+            modLocalRuntime(libs.architectury.fabric) {
+                exclude(group = "net.fabricmc", module = "fabric-loader")
+            }
+            modLocalRuntime(libs.paucal.fabric)
+            modLocalRuntime(libs.patchouli.fabric)
+//            modLocalRuntime(libs.serializationHooks)
+            modLocalRuntime(libs.inline.fabric)
+
+            libs.bundles.cardinalComponents.get().forEach {
+                modLocalRuntime(it)
+            }
+
+            modApi(libs.clothConfig.fabric) {
+                exclude(group = "net.fabricmc.fabric-api")
+            }
+            modImplementation(libs.modMenu)
+
+            // ktor
             libs.bundles.ktor.asProvider().get().forEach {
                 implementation(it)
                 include(it)
@@ -106,7 +131,6 @@ cloche {
                 implementation(it)
                 include(it)
             }
-
         }
 
         runs {

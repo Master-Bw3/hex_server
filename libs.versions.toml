@@ -25,10 +25,11 @@ forge-dependency = "47" # for mods.toml
 # mods
 
 hexcasting    = "0.12.0-devel-pre-4"
-paucal = "0.7.1-pre-27+1.21.1-common"
+architectury  = "[13.0, 14.0["
+paucal        = "0.7.1-pre-27+1.21.1-common"
 paucal-fabric = "0.7.1-pre-27+1.21.1-fabric"
 paucal-forge  = "0.7.1-pre-27+1.21.1-forge"
-inline = "1.21.1-1.2.2"
+inline        = "1.21.1-1.2.2"
 
 patchouli        = "1.21.1-90"
 patchouli-fabric = "1.21.1-90-FABRIC" # thanks vazkii
@@ -85,6 +86,7 @@ ktor-deps = ["ktor-server-websockets-jvm", "ktor-server-jetty-jakarta-jvm", "kto
     "jansi", "annotations", "jakarta-servlet-api", "jakarta-websocket-api", "jakarta-enterprise-cdi-api",
     "jakarta-interceptor-api", "jakarta-annotation-api", "jakarta-websocket-client-api", "jakarta-enterprise-lang-model",
     "jakarta-transaction-api", "jakarta-el-api", "jakarta-inject-api"]
+cardinalComponents = ["cardinalComponents-base", "cardinalComponents-entity", "cardinalComponents-item", "cardinalComponents-block"]
 
 [libraries]
 kotlin-stdlib = { module="org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref="kotlin" }
@@ -102,6 +104,10 @@ forge = { module="net.minecraftforge:forge", version.ref="forge" }
 hexcasting-common = { module="at.petra-k.hexcasting:hexcasting-common-1.21.1", version.ref="hexcasting" }
 hexcasting-fabric = { module="at.petra-k.hexcasting:hexcasting-fabric-1.21.1", version.ref="hexcasting" }
 hexcasting-forge  = { module="at.petra-k.hexcasting:hexcasting-forge-1.21.1", version.ref="hexcasting" }
+
+architectury        = { module="dev.architectury:architectury", version.ref="architectury" }
+architectury-forge  = { module="dev.architectury:architectury-forge", version.ref="architectury" }
+architectury-fabric = { module="dev.architectury:architectury-fabric", version.ref="architectury" }
 
 paucal-common = { module = "at.petra-k:paucal", version.ref = "paucal" }
 paucal-fabric = { module = "at.petra-k:paucal", version.ref = "paucal-fabric" }
