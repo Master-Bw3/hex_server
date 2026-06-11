@@ -156,7 +156,7 @@ cloche {
 
         dependencies {
             modImplementation(libs.forgifiedFabricApi)
-            modImplementation(libs.kotlin.forge)
+            modImplementation(stripIncludes(libs.kotlin.forge))
 
             // hex casting + deps
             libs.bundles.hexcasting.neoforge.get().forEach {
@@ -167,6 +167,7 @@ cloche {
             libs.bundles.ktor.get().forEach {
                 implementation(it)
                 include(it)
+                legacyClasspath(it)
             }
         }
 
